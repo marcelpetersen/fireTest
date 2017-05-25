@@ -1,0 +1,37 @@
+<ion-menu [content]="content">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>SHOTLIST.IO</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+
+    <button menuClose ion-item text-wrap (click)="goToProfile()">
+      <ion-avatar item-left><img src="http://placehold.it/50x50?text=+"></ion-avatar>
+      <h2 align="center">Welcome</h2>
+      <h4 align="center">{{ currentUser?.email }}</h4>
+      <h3 align="center">Your ID is:</h3>
+      <h4 align="center">{{ (authState | async)?.uid }}</h4>
+    </button>
+    
+    <ion-list no-lines>
+      <button color="primary" detail-none menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+        <ion-icon [name]="p.icon" item-left></ion-icon>
+        {{p.title}}
+      </button>
+    </ion-list>
+
+  </ion-content>
+
+  <ion-footer>
+    <button ion-button full icon-right menuClose detail-none (click)="logOut()">
+      Logout
+      <ion-icon name="log-out"></ion-icon>
+    </button>
+  </ion-footer>
+
+</ion-menu>
+
+<!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

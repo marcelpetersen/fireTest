@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>All Projects</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addProject()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+	<ion-list>
+ 		<ion-card margin-vertical *ngFor="let project of projectsList | async"  (click)="projectTapped(project.$key)">
+        <ion-toolbar color="primary">
+          <ion-title>{{project.title}}</ion-title>
+        </ion-toolbar>
+        <ion-card-content no-padding>
+          <ion-item text-wrap>
+            <h2 align="center">"{{project.description}}"</h2>
+            <ion-note text-center>
+              <div>Owner: {{project.ownerEmail}}</div>
+            </ion-note>
+          </ion-item>
+        </ion-card-content>
+  
+        <ion-list no-margin no-lines>
+          <ion-item color="steel4">
+              <ion-row>
+                <ion-col center text-center>
+                  <p>SCENES</p>
+                  <ion-badge color="steel3">{{project.sceneCount}}</ion-badge>
+                </ion-col>
+                <ion-col center text-center>
+                  <p>SHOTS</p>
+                  <ion-badge color="steel3">{{project.shotCount}}</ion-badge>                  
+                </ion-col>
+                <ion-col center text-center>
+                  <p>PAGES</p>
+                  <ion-badge color="steel3">{{project.pageCount}} &nbsp; {{project.pageEighths}}/8</ion-badge>
+                </ion-col>
+              </ion-row>
+          </ion-item>
+        </ion-list>
+
+  	</ion-card>
+	</ion-list>
+</ion-content>

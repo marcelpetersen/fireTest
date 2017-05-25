@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>{{ (currentScene | async)?.title }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="editScene()">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list no-margin>
+    <ion-item text-wrap>
+      <h2 align="center">"{{ (currentScene | async)?.description }}"</h2>
+    </ion-item>
+  </ion-list>
+
+  <ion-list no-margin no-lines>
+    <ion-item color="steel4">
+        <ion-row>
+          <ion-col center text-center>
+            <p>SCENES</p>
+            <ion-badge color="steel3">{{(currentScene | async)?.sceneCount}}</ion-badge>
+          </ion-col>
+          <ion-col center text-center>
+            <p>SHOTS</p>
+            <ion-badge color="steel3">{{(currentScene | async)?.shotCount}}</ion-badge>                  
+          </ion-col>
+          <ion-col center text-center>
+            <p>PAGES</p>
+            <ion-badge color="steel3">{{(currentScene | async)?.pageCount}} &nbsp; {{(currentScene | async)?.pageEighths}}/8</ion-badge>
+          </ion-col>
+        </ion-row>
+    </ion-item>
+  </ion-list>
+
+  <ion-toolbar no-lines color="primary">
+    <ion-title>SHOTS: {{(currentScene | async)?.shotCount}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only color="white" (click)="addShot()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-list>
+    <ion-card margin-vertical *ngFor="let shot of shotsList | async" (click)="shotTapped($event, shot.$key)">
+      <ion-toolbar color="steel2">
+          <ion-title>{{shot.title}}</ion-title>
+      </ion-toolbar>
+      <ion-card-content no-padding>
+        <ion-item text-wrap color="light">
+          <ion-note text-center>
+            <p>{{shot.description}}</p>
+          </ion-note>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+</ion-content>

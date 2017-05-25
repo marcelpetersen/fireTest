@@ -1,0 +1,119 @@
+<!--
+  Generated template for the NewProject page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>New Scene</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <form [formGroup]="newSceneForm" (submit)="addScene()" novalidate>
+
+	<ion-list>
+
+	  <ion-item>
+	    <ion-label color="primary">Scene Number</ion-label>
+	    <ion-input formControlName="sceneNumber" type="number" placeholder="0"></ion-input>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label color="primary">Sub</ion-label>
+	    <ion-input formControlName="sceneSub" placeholder="none"></ion-input>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label color="primary" stacked>Scene Title</ion-label>
+	    <ion-input formControlName="title" clearInput></ion-input>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label color="primary" stacked>Scene Description</ion-label>
+	    <ion-input formControlName="description" clearInput></ion-input>
+	  </ion-item>
+
+		<ion-item>
+			<ion-segment formControlName="sceneLoc">
+		   		<ion-segment-button value="INT">
+		    		Interior
+		   		</ion-segment-button>
+		  		<ion-segment-button value="EXT">
+		    		Exterior
+		    	</ion-segment-button>
+		   		<ion-segment-button value="VFX">
+		    		VFX
+		   		</ion-segment-button>
+	 		 </ion-segment>
+	 	</ion-item>
+
+		<ion-item>
+			<ion-segment formControlName="sceneTime">
+		   		<ion-segment-button value="DAY">
+		    		Day
+		   		</ion-segment-button>
+		  		<ion-segment-button value="NIGHT">
+		    		Night
+		    	</ion-segment-button>
+		   		<ion-segment-button value="VFX">
+		    		VFX
+		   		</ion-segment-button>
+	 		 </ion-segment>
+	 	</ion-item>
+
+	  <ion-item>
+	    <ion-label color="primary">Start Page</ion-label>
+	    <ion-input formControlName="startPage" type="number" placeholder="0"></ion-input>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label color="primary">Page Count</ion-label>
+	    <ion-input formControlName="pageCount" type="number" placeholder="0"></ion-input>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label color="primary">Eighths</ion-label>
+	    <ion-select interface="popover" formControlName="pageEighths" placeholder="0/8">
+	      <ion-option value="0">0/8</ion-option>
+	      <ion-option value="1">1/8</ion-option>
+	      <ion-option value="2">2/8</ion-option>
+	      <ion-option value="3">3/8</ion-option>
+	      <ion-option value="4">4/8</ion-option>
+	      <ion-option value="5">5/8</ion-option>
+	      <ion-option value="6">6/8</ion-option>
+	      <ion-option value="7">7/8</ion-option>
+	    </ion-select>
+	  </ion-item>
+	  
+	</ion-list>
+
+  </form>
+</ion-content>
+
+
+<ion-footer>
+
+  <form [formGroup]="newSceneForm" (submit)="addScene()" novalidate>
+
+	  <ion-toolbar>
+		<ion-row>
+		  <ion-col>
+			<button ion-button block color="steel2" type="reset" (click)="closeModal()">
+		      Cancel
+		    </button>
+		  </ion-col>
+		  <ion-col>
+	        <button ion-button block color="green" type="submit">
+	        Save
+	        </button>
+	      </ion-col>
+	    </ion-row>
+	  </ion-toolbar>
+	  
+  </form>
+
+</ion-footer>
+

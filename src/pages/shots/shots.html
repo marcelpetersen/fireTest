@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>{{ (currentShot | async)?.title }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="editShot()">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list no-margin>
+    <ion-item text-wrap>
+      <h2 align="center">"{{ (currentShot | async)?.description }}"</h2>
+    </ion-item>
+  </ion-list>
+
+  <ion-list no-margin no-lines>
+    <ion-item color="steel4">
+        <ion-row>
+          <ion-col center text-center>
+            <p>SCENES</p>
+            <ion-badge color="steel3">{{(currentShot | async)?.sceneCount}}</ion-badge>
+          </ion-col>
+          <ion-col center text-center>
+            <p>SHOTS</p>
+            <ion-badge color="steel3">{{(currentShot | async)?.shotCount}}</ion-badge>                  
+          </ion-col>
+          <ion-col center text-center>
+            <p>PAGES</p>
+            <ion-badge color="steel3">{{(currentShot | async)?.pageCount}}</ion-badge>
+          </ion-col>
+        </ion-row>
+    </ion-item>
+  </ion-list>
+
+  <ion-toolbar no-lines color="primary">
+    <ion-title>TAKES: {{(currentShot | async)?.takeCount}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only color="white" (click)="addTake()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-list no-margin>
+
+    <ion-item no-lines>
+      <ion-note text-center>
+        <h2>This Shot has no Takes.</h2>
+        <h2>Click <ion-icon name="add"></ion-icon> to add a Take</h2>
+      </ion-note>
+    </ion-item>
+    
+    <ion-item *ngFor="let take of takesList | async">
+      <ion-icon color="danger2" name="remove-circle" item-left (click)="deleteTake(take.$key)"></ion-icon>
+      Take {{take.takeNumber}}
+      <ion-icon color="primary" name="thumbs-up" item-right></ion-icon>
+      <ion-icon color="yellow" name="star" item-right></ion-icon>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

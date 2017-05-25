@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>{{ (currentProject | async)?.title }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="editProject()">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+	<ion-list no-margin>
+    <ion-item text-wrap>
+      <h2 align="center">"{{ (currentProject | async)?.description }}"</h2>
+      <ion-note text-center>
+        <p>Owner: {{ (currentProject | async)?.ownerEmail }} </p>
+      </ion-note>
+    </ion-item>
+  </ion-list>
+
+  <ion-list no-margin no-lines>
+    <ion-item color="steel4">
+        <ion-row>
+          <ion-col center text-center>
+            <p>SCENES</p>
+            <ion-badge color="steel3">{{(currentProject | async)?.sceneCount}}</ion-badge>
+          </ion-col>
+          <ion-col center text-center>
+            <p>SHOTS</p>
+            <ion-badge color="steel3">{{(currentProject | async)?.shotCount}}</ion-badge>                  
+          </ion-col>
+          <ion-col center text-center>
+            <p>PAGES</p>
+            <ion-badge color="steel3">{{(currentProject | async)?.pageCount}} &nbsp; {{(currentProject | async)?.pageEighths}}/8</ion-badge>
+          </ion-col>
+        </ion-row>
+    </ion-item>
+  </ion-list>
+
+  <ion-toolbar no-lines color="primary">
+    <ion-title>SCENES: {{ (currentProject | async)?.sceneCount }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only color="white" (click)="addScene()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-list>
+    <ion-card margin-vertical *ngFor="let scene of scenesList | async" (click)="sceneTapped(scene.$key)">
+
+      <ion-toolbar color="steel2">
+        <ion-title>SCENE {{scene.sceneNumber}} - {{scene.sceneLoc}} - {{scene.sceneTime}}</ion-title>
+      </ion-toolbar>
+
+      <ion-card-content no-padding>
+        <ion-item text-wrap text-center>
+          <h3>{{scene.title}}</h3>
+        </ion-item>
+        <ion-item text-wrap color="light">
+          <ion-note text-center>
+            <p>{{scene.description}}</p>
+          </ion-note>
+        </ion-item>
+      </ion-card-content>
+
+    </ion-card>
+  </ion-list>
+</ion-content>

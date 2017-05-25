@@ -1,0 +1,139 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Edit Shot</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding-bottom>
+
+  <form [formGroup]="editShotForm" (submit)="updateShot()" novalidate>
+  
+	<ion-list>
+
+	  <ion-item>
+	    <ion-label color="primary">Shot Number</ion-label>
+	    <ion-input formControlName="shotNumber" [(ngModel)]="currentShotNumber" type="number"></ion-input>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label color="primary">Sub</ion-label>
+	    <ion-input formControlName="shotSub" [(ngModel)]="currentShotSub"></ion-input>
+	  </ion-item>
+	  <ion-item>
+	    <ion-label color="primary" stacked>Shot Title</ion-label>
+	    <ion-input formControlName="title" [(ngModel)]="currentTitle" clearInput></ion-input>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label color="primary" stacked>Shot Description</ion-label>
+	    <ion-input formControlName="description" [(ngModel)]="currentDescription" clearInput></ion-input>
+	  </ion-item>
+
+		<ion-item>
+			<ion-segment formControlName="shotLoc" [(ngModel)]="currentShotLoc">
+		   		<ion-segment-button value="INT">
+		    		Interior
+		   		</ion-segment-button>
+		  		<ion-segment-button value="EXT">
+		    		Exterior
+		    	</ion-segment-button>
+		   		<ion-segment-button value="VFX">
+		    		VFX
+		   		</ion-segment-button>
+	 		 </ion-segment>
+	 	</ion-item>
+
+		<ion-item>
+			<ion-segment formControlName="shotTime" [(ngModel)]="currentShotTime">
+		   		<ion-segment-button value="DAY">
+		    		Day
+		   		</ion-segment-button>
+		  		<ion-segment-button value="NIGHT">
+		    		Night
+		    	</ion-segment-button>
+		   		<ion-segment-button value="VFX">
+		    		VFX
+		   		</ion-segment-button>
+	 		 </ion-segment>
+	 	</ion-item>
+
+	  <ion-item>
+	    <ion-label color="primary">Shot Type</ion-label>
+	    <ion-select interface="popover" formControlName="shotType" [(ngModel)]="currentShotType" placeholder="{{currentShotType}}">
+	      <ion-option value="cu">CU</ion-option>
+	      <ion-option value="mcu">MCU</ion-option>
+	      <ion-option value="ecu">ECU</ion-option>
+	      <ion-option value="wide">Wide</ion-option>
+	      <ion-option value="long">Long</ion-option>
+	    </ion-select>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label color="primary">Camera Movement</ion-label>
+	    <ion-select interface="popover" formControlName="cameraMovement" [(ngModel)]="currentCameraMovement" placeholder="{{currentCameraMovement}}">
+	      <ion-option value="pan">Pan</ion-option>
+	      <ion-option value="tilt">Tilt</ion-option>
+	      <ion-option value="zoom">Zoom</ion-option>
+	    </ion-select>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label color="primary">Start Page</ion-label>
+	    <ion-input type="number" formControlName="startPage" [(ngModel)]="currentStartPage"></ion-input>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label color="primary">Page Count</ion-label>
+	    <ion-input formControlName="pageCount" type="number" [(ngModel)]="currentPageCount"></ion-input>
+	  </ion-item>
+	  
+	  <ion-item>
+	    <ion-label color="primary">Eighths</ion-label>
+	    <ion-select interface="popover" formControlName="pageEighths" [(ngModel)]="currentPageEighths" placeholder="{{currentPageEighths}}/8">
+	      <ion-option value="0">0/8</ion-option>
+	      <ion-option value="1">1/8</ion-option>
+	      <ion-option value="2">2/8</ion-option>
+	      <ion-option value="3">3/8</ion-option>
+	      <ion-option value="4">4/8</ion-option>
+	      <ion-option value="5">5/8</ion-option>
+	      <ion-option value="6">6/8</ion-option>
+	      <ion-option value="7">7/8</ion-option>
+	    </ion-select>
+	  </ion-item>
+
+	</ion-list>
+
+  </form>
+
+</ion-content>
+
+<ion-footer>
+
+  <form [formGroup]="editShotForm" (submit)="updateShot()" novalidate>
+
+	  <ion-toolbar>
+	    <ion-row>
+	      <ion-col>
+	        <button ion-button block color="danger2" type="reset" (click)="deleteShot()">
+	          Delete Shot
+	        </button>
+	      </ion-col>
+	    </ion-row>
+		<ion-row>
+		  <ion-col>
+			<button ion-button block color="steel2" type="reset" (click)="closeModal()">
+		      Cancel
+		    </button>
+		  </ion-col>
+		  <ion-col>
+	        <button ion-button block color="green" type="submit">
+	          Save
+	        </button>
+	      </ion-col>
+	    </ion-row>
+	  </ion-toolbar>
+	
+  </form>
+
+</ion-footer>
