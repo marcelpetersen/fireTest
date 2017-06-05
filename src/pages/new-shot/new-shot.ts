@@ -54,17 +54,6 @@ export class NewShot {
       let startPage = this.newShotForm.value.startPage;
       let pageCount = this.newShotForm.value.pageCount;
       let pageEighths = this.newShotForm.value.pageEighths
-      console.log(shotNumber);
-      console.log(shotSub);
-      console.log(shotTitle);
-      console.log(shotDescription);
-      console.log(shotLoc);
-      console.log(shotTime);
-      console.log(shotType);
-      console.log(cameraMovement);
-      console.log(startPage);
-      console.log(pageCount);
-      console.log(pageEighths);
       this.shotlistData.createShot(shotNumber, shotSub, shotTitle, shotDescription, shotLoc, shotTime, shotType, cameraMovement, startPage, pageCount, pageEighths);
       this.view.dismiss();
     }

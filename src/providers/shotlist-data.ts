@@ -203,9 +203,6 @@ export class ShotlistData {
   createTake(): firebase.Promise<any> {
     // get newTakeRef
     var newTakeRef = this.takesRef.push();
-    // var sceneCount: number = 0;
-    // var shotCount: number = 0;
-    // var pageCount: number = 0;
     var i:number = this.takeCount;
     i++;
     var newCount: number = i;

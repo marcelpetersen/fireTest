@@ -18,6 +18,8 @@ export class ProjectData {
   private projectsRef: any;
   private titleRef: any;
 
+  private storageRef: any;
+
   constructor(public authService: AuthService) {
     //
     // AuthService ready. incorporate here
@@ -26,6 +28,7 @@ export class ProjectData {
     this.currentUser = firebase.auth().currentUser.uid;
     this.currentUserEmail = firebase.auth().currentUser.email;
     this.projectsRef = firebase.database().ref('projects');
+    this.storageRef = firebase.storage().ref();
   }
 
   setCurrentProject(projectKey) {
@@ -43,14 +46,14 @@ export class ProjectData {
     this.shotKey = shotKey;
   }
 
-  createProject(projectTitle: string, projectDescription: string, pageCount: number, pageEighths: number): firebase.Promise<any> {
+  createProject(projectImage: string, projectTitle: string, projectDescription: string, pageCount: number, pageEighths: number): firebase.Promise<any> {
     // get userKey as variable  
     var userKey: string = this.currentUser;
     // get newProjectRef
     var newProjectRef = this.projectsRef.push();
     // assign newKey to variables
     var newKey: string  = newProjectRef.key;
-    //set sceneCount, shotCount, pageCount to 0
+    //set sceneCount, shotCount 0
     var sceneCount: number = 0;
     var shotCount: number = 0;
     // make new project
@@ -75,11 +78,13 @@ export class ProjectData {
           pageCount: pageCount,
           pageEighths: pageEighths
         });
+      }).then(function(){
+        let newStorageRef = firebase.storage().ref().child('/projects/' + newKey).child('projectImage.jpeg');
+        return newStorageRef.putString(projectImage, 'base64', {contentType: 'image/jpeg'}).then( savedImage => {
+            let downloadURL: string = savedImage.downloadURL;
+            return firebase.database().ref().child('/projects/' + newKey).child('imageURL').set(downloadURL);
+        });
       });  
-  }
-
-  addProjectPhoto() {
-    console.log('Add Cover Photo clicked')
   }
 
   removeProject(projectId: string): firebase.Promise<any> {
@@ -92,8 +97,8 @@ export class ProjectData {
       // remove projectKey at /projectsByUser/userKey/projectKey
       return firebase.database().ref().child('projectsByUser').child(userKey).child(projectKey).remove().then(function() {
       // remove projectKey at /shotlists/projectKey
-       return firebase.database().ref().child('shotlists').child(projectKey).remove()
-      });
+       return firebase.database().ref().child('shotlists').child(projectKey).remove();
+     });
     });
   }
 
@@ -104,12 +109,26 @@ export class ProjectData {
       description: projectDescription,
       pageCount: pageCount,          
       pageEighths: pageEighths          
-    }).then(function() {
+    }).then(() => {
       return firebase.database().ref().child('shotlists').child(projectKey).child('stats').update({
         pageCount: pageCount,
         pageEighths: pageEighths
       });
     });  
+  }
+
+  removeImage(projectKey: string): firebase.Promise<any> {
+    return firebase.storage().ref().child('projects').child(projectKey).child('projectImage.jpeg').delete().then(() => {
+      return firebase.database().ref().child('/projects/' + projectKey).child('imageURL').set(null);
+    });
+  };
+
+  updateImage(projectImage: string): firebase.Promise<any> {
+//    let newStorageRef = firebase.storage().ref().child('/projects/' + this.projectKey).child('projectImage.jpeg');
+    return firebase.storage().ref().child('/projects/' + this.projectKey).child('projectImage.jpeg').putString(projectImage, 'base64', {contentType: 'image/jpeg'}).then( savedImage => {
+        let downloadURL: string = savedImage.downloadURL;
+        return firebase.database().ref().child('/projects/' + this.projectKey).child('imageURL').set(downloadURL);
+    });
   }
 
 }

@@ -56,15 +56,6 @@ export class NewScene {
       let startPage = this.newSceneForm.value.startPage;
       let pageCount = this.newSceneForm.value.pageCount;
       let pageEighths = this.newSceneForm.value.pageEighths
-      console.log(sceneNumber);
-      console.log(sceneSub);
-      console.log(sceneTitle);
-      console.log(sceneDescription);
-      console.log(sceneLoc);
-      console.log(sceneTime);
-      console.log(startPage);
-      console.log(pageCount);
-      console.log(pageEighths);
       this.shotlistData.createScene(sceneNumber, sceneSub, sceneTitle, sceneDescription, sceneLoc, sceneTime, startPage, pageCount, pageEighths);
       this.view.dismiss();
     }

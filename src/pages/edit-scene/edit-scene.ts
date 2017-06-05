@@ -46,8 +46,6 @@ export class EditScene {
     this.projectKey = this.projectData.projectKey;
     this.sceneKey = this.shotlistData.sceneKey;
     this.sceneRef = firebase.database().ref('/shotlists/' + this.projectKey + '/scenes/' + this.sceneKey);
-    console.log('editScene projectKey:', this.projectKey);
-    console.log('editScene sceneKey:', this.sceneKey);
     this.getScene();
   }
 
@@ -61,8 +59,6 @@ export class EditScene {
   }
 
  getScene() {
-//      this.sceneRef = firebase.database().ref('/projects/' + this.projectKey + '/scenes/' + this.sceneKey);
-
       this.sceneRef.once('value', snap => {
       console.log('sceneRef value', snap.val());
       this.currentSceneNumber = snap.val().sceneNumber;
@@ -74,7 +70,6 @@ export class EditScene {
       this.currentStartPage = snap.val().startPage;
       this.currentPageCount = snap.val().pageCount;
       this.currentPageEighths = snap.val().pageEighths;
-      console.log('test:', this.currentPageEighths);
     });
   }
 
@@ -91,15 +86,6 @@ export class EditScene {
       let startPage = this.editSceneForm.value.startPage;
       let pageCount = this.editSceneForm.value.pageCount;
       let pageEighths = this.editSceneForm.value.pageEighths
-      console.log(sceneNumber);
-      console.log(sceneSub);
-      console.log(sceneTitle);
-      console.log(sceneDescription);
-      console.log(sceneLoc);
-      console.log(sceneTime);
-      console.log(startPage);
-      console.log(pageCount);
-      console.log(pageEighths);
       this.shotlistData.updateScene(sceneNumber, sceneSub, sceneTitle, sceneDescription, sceneLoc, sceneTime, startPage, pageCount, pageEighths);
       console.log('Scene Updated');
       this.showToast('bottom', 'Scene Updated');
@@ -124,7 +110,6 @@ export class EditScene {
           text: 'Confirm',
           role: 'destructive',
           handler: () => {
-            console.log('Save clicked');
             this.shotlistData.removeScene(this.sceneKey);
             this.view.dismiss();
             this.appCtrl.getRootNav().pop();
@@ -143,7 +128,6 @@ export class EditScene {
       duration: 2000,
       position: position
     });
-
     toast.present(toast);
   }
 

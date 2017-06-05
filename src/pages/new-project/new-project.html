@@ -9,6 +9,23 @@
   <form [formGroup]="newProjectForm" (submit)="addProject()" novalidate>
 
 	<ion-list>
+
+	  <ion-item *ngIf="!pictureTaken" (click)="takePicture()">
+	    <img src="{{placeholderImage}}" />
+	  </ion-item>
+		
+	  <ion-item [hidden]="!pictureTaken" (click)="takePicture()">
+	    <img id="camera-image" />
+	  </ion-item>
+
+<!--
+	  <ion-item (click)="takePicture()">
+	    <img id="camera-image" />
+	  	<img src="{{base64Image}}" *ngIf="pictureTaken" />
+	  	<img src="{{placeholderImage}}" *ngIf="!pictureTaken" />
+	  </ion-item>
+-->
+
 	  <ion-item>
 	    <ion-label color="primary" stacked>Project Title</ion-label>
 	    <ion-input formControlName="title" clearInput></ion-input>

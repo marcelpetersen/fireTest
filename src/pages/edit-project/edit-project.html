@@ -6,13 +6,37 @@
 
 
 <ion-content>
+
+  <ion-item *ngIf="hasImage && !pictureTaken">
+    <img src="{{currentImage}}" />
+    <ion-fab bottom right>
+		<button ion-fab color="light" (click)="takePicture()"><ion-icon name="camera"></ion-icon></button>
+		<button ion-fab color="danger2" (click)="deletePicture()"><ion-icon name="trash"></ion-icon></button>
+	</ion-fab>
+  </ion-item>
+
+  <ion-item *ngIf="!hasImage && !pictureTaken" (click)="takePicture()">
+    <img src="{{placeholderImage}}" />
+  </ion-item>
+
+  <ion-item [hidden]="!pictureTaken">
+    <img id="camera-image" />
+    <ion-fab bottom right>
+		<button ion-fab color="green" (click)="updatePicture()"><ion-icon name="checkmark-circle"></ion-icon></button>
+		<button ion-fab color="light" (click)="takePicture()"><ion-icon name="camera"></ion-icon></button>
+		<button ion-fab color="danger2" (click)="cancelPicture()"><ion-icon name="close-circle"></ion-icon></button>
+	</ion-fab>
+  </ion-item>
+
   <form [formGroup]="editProjectForm" (submit)="updateProject()" novalidate>
 
 	<ion-list>
+
 	  <ion-item>
 	    <ion-label color="primary" stacked>Project Title</ion-label>
 	    <ion-input formControlName="title" [(ngModel)]="currentTitle" clearInput></ion-input>
 	  </ion-item>
+
 	  <ion-item>
 	    <ion-label color="primary" stacked>Project Description</ion-label>
 	    <ion-input formControlName="description" [(ngModel)]="currentDescription" clearInput></ion-input>
@@ -22,6 +46,7 @@
 	    <ion-label color="primary">Page Count</ion-label>
 	    <ion-input formControlName="pageCount" [(ngModel)]="currentPageCount" type="number"></ion-input>
 	  </ion-item>
+
 	  <ion-item>
 	    <ion-label color="primary">Eighths</ion-label>
 	    <ion-select interface="popover" formControlName="pageEighths" [(ngModel)]="currentPageEighths" placeholder="{{currentPageEighths}}/8">
@@ -35,9 +60,11 @@
 	      <ion-option value="7">7/8</ion-option>
 	    </ion-select>
 	  </ion-item>
+
 	</ion-list>
 
   </form>
+
 </ion-content>
 
 
@@ -46,16 +73,17 @@
   <form [formGroup]="editProjectForm" (submit)="updateProject()" novalidate>
 
 	  <ion-toolbar>
+
 	    <ion-row>
 	      <ion-col>
-	        <button ion-button block color="danger2" type="reset" (click)="deleteProject()">
+	        <button ion-button block color="danger2" type="button" (click)="deleteProject()">
 	          Delete Project
 	        </button>
 	      </ion-col>
 	    </ion-row>
 		<ion-row>
 		  <ion-col>
-			<button ion-button block color="steel2" type="reset" (click)="closeModal()">
+			<button ion-button block color="steel2" type="button" (click)="closeModal()">
 		      Cancel
 		    </button>
 		  </ion-col>
@@ -65,6 +93,7 @@
 	        </button>
 	      </ion-col>
 	    </ion-row>
+	    
 	  </ion-toolbar>
 
   </form>

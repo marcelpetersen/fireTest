@@ -77,7 +77,6 @@ export class EditShot {
       this.currentStartPage = snap.val().startPage;
       this.currentPageCount = snap.val().pageCount;
       this.currentPageEighths = snap.val().pageEighths;
-      console.log('test', this.currentPageEighths);
     });
   }
 

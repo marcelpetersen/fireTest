@@ -30,7 +30,7 @@ export class MyApp {
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public afAuth: AngularFireAuth, public authService: AuthService) {
    
     this.initializeApp();
-    //Load the pages into an array
+    
     this.pages = [
       { title: 'Home', icon: 'home', component: HomePage },
       { title: 'My Projects', icon: 'folder', component: UserProjects },

@@ -27,16 +27,12 @@ export class TitlePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, db: AngularFireDatabase, public alertCtrl: AlertController, public actionSheetCtrl: ActionSheetController, public projectData: ProjectData, public shotlistData: ShotlistData, private modal: ModalController) {
         
-//        this.projectKey = navParams.get('projectKey');
-//        this.shotlistKey = navParams.get('projectKey');
-
         this.currentProject = db.object('/projects/' + this.projectKey);
         this.scenesList = db.list('/shotlists/' +this.projectKey + '/scenes/');
 
         this.projectRef = firebase.database().ref('projects').child(this.projectKey);
         this.shotlistRef = firebase.database().ref('shotlists').child(this.shotlistKey);
         this.scenesRef = firebase.database().ref('shotlists').child(this.shotlistKey).child('scenes');
-
   }
 
   ionViewDidLoad() {

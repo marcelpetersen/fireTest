@@ -19,6 +19,7 @@
         <ion-toolbar color="primary">
           <ion-title>{{project.title}}</ion-title>
         </ion-toolbar>
+        <img *ngIf="project.imageURL" src="{{project.imageURL}}" />
         <ion-card-content no-padding>
           <ion-item text-wrap>
             <h2 align="center">"{{project.description}}"</h2>

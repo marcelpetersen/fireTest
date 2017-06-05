@@ -20,6 +20,7 @@ import { ShotsPage } from '../pages/shots/shots'
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Camera } from '@ionic-native/camera';
 
 import { ProjectData } from '../providers/project-data';
 import { AuthService } from '../providers/auth-service';
@@ -74,6 +75,7 @@ firebase.initializeApp(firebaseConfig);
   providers: [
     StatusBar,
     SplashScreen,
+    Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ProjectData,
     AuthService,
