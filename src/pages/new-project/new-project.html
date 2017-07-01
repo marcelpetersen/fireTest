@@ -14,8 +14,12 @@
 	    <img src="{{placeholderImage}}" />
 	  </ion-item>
 		
-	  <ion-item [hidden]="!pictureTaken" (click)="takePicture()">
+	  <ion-item [hidden]="!pictureTaken">
 	    <img id="camera-image" />
+	    <ion-fab bottom right>
+			<button ion-fab color="light" (click)="takePicture()"><ion-icon name="camera"></ion-icon></button>
+			<button ion-fab color="danger2" (click)="cancelPicture()"><ion-icon name="trash"></ion-icon></button>
+		</ion-fab>
 	  </ion-item>
 
 <!--

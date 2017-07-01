@@ -45,12 +45,12 @@ export class NewProject {
 
   takePicture(){
     let options = {
-      targetWidth: 800,
-      targetHeight: 450,
-      quality: 100,
+      targetWidth: 1000,
+      targetHeight: 1000,
+      quality: 50,
       allowEdit: true,
-      correctOrientation: false,
-      saveToPhotoAlbum: true,
+      correctOrientation: true,
+      saveToPhotoAlbum: false,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE
@@ -65,6 +65,12 @@ export class NewProject {
       }, (err) => {
         console.log(err);
     });
+  }
+
+  cancelPicture() {
+    this.pictureTaken = false;
+    this.rawImage = null;
+    this.base64Image = null;
   }
 
   addProject() {

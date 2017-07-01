@@ -16,6 +16,18 @@
 
 	<ion-list>
 
+	  <ion-item *ngIf="!pictureTaken" (click)="takePicture()">
+	    <img src="{{placeholderImage}}" />
+	  </ion-item>
+		
+	  <ion-item [hidden]="!pictureTaken">
+	    <img id="camera-image" />
+	    <ion-fab bottom right>
+			<button ion-fab color="light" (click)="takePicture()"><ion-icon name="camera"></ion-icon></button>
+			<button ion-fab color="danger2" (click)="cancelPicture()"><ion-icon name="trash"></ion-icon></button>
+		</ion-fab>
+	  </ion-item>
+
 	  <ion-item>
 	    <ion-label color="primary">Scene Number</ion-label>
 	    <ion-input formControlName="sceneNumber" type="number" placeholder="0"></ion-input>
@@ -64,10 +76,10 @@
 	 		 </ion-segment>
 	 	</ion-item>
 
-	  <ion-item>
+<!-- 	  <ion-item>
 	    <ion-label color="primary">Start Page</ion-label>
 	    <ion-input formControlName="startPage" type="number" placeholder="0"></ion-input>
-	  </ion-item>
+	  </ion-item> -->
 
 	  <ion-item>
 	    <ion-label color="primary">Page Count</ion-label>

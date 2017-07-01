@@ -124,7 +124,6 @@ export class ProjectData {
   };
 
   updateImage(projectImage: string): firebase.Promise<any> {
-//    let newStorageRef = firebase.storage().ref().child('/projects/' + this.projectKey).child('projectImage.jpeg');
     return firebase.storage().ref().child('/projects/' + this.projectKey).child('projectImage.jpeg').putString(projectImage, 'base64', {contentType: 'image/jpeg'}).then( savedImage => {
         let downloadURL: string = savedImage.downloadURL;
         return firebase.database().ref().child('/projects/' + this.projectKey).child('imageURL').set(downloadURL);

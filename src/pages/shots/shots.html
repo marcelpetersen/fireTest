@@ -21,13 +21,10 @@
     <ion-item color="steel4">
         <ion-row>
           <ion-col center text-center>
-            <p>SCENES</p>
-            <ion-badge color="steel3">{{(currentShot | async)?.sceneCount}}</ion-badge>
+            <p>TAKES</p>
+            <ion-badge color="steel3">{{(currentShot | async)?.takeCount}}</ion-badge>
           </ion-col>
-          <ion-col center text-center>
-            <p>SHOTS</p>
-            <ion-badge color="steel3">{{(currentShot | async)?.shotCount}}</ion-badge>                  
-          </ion-col>
+
           <ion-col center text-center>
             <p>PAGES</p>
             <ion-badge color="steel3">{{(currentShot | async)?.pageCount}}</ion-badge>
