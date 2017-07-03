@@ -8,7 +8,7 @@ import * as firebase from 'firebase';
 import { ProjectData } from '../../providers/project-data';
 import { ShotlistData } from '../../providers/shotlist-data';
 
-import { TitlePage } from '../title/title'
+//import { TitlePage } from '../title/title'
 
 /**
  * Generated class for the UserProjects page.
@@ -60,7 +60,7 @@ export class UserProjects {
   projectTapped(projectKey) {
     this.projectData.setCurrentProject(projectKey);
     this.shotlistData.setCurrentProject(projectKey);
-    this.navCtrl.push(TitlePage, {
+    this.navCtrl.push('TitlePage', {
       projectKey: projectKey
     });
   }

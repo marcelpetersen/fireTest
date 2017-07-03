@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../providers/auth-service';
 import { EmailValidator } from '../../validators/email';
 
+@IonicPage()
 @Component({
   selector: 'page-register',
   templateUrl: 'register.html'

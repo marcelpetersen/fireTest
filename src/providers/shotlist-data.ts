@@ -131,14 +131,34 @@ export class ShotlistData {
     }); 
   }
 
+
+  // removeScene(sceneKey: string): firebase.Promise<any> {
+  //   // remove sceneKey at /shotlists/projectKey/scenes/sceneKey/
+  //   return firebase.database().ref().child('/shotlists/' + this.projectKey).child('/scenes/' + this.sceneKey).remove().then(() => {
+  //     return firebase.storage().ref().child('/projects/' + this.projectKey).child('/scenes/' + this.sceneKey + 'sceneImage.jpeg').delete().then(() => {
+  //     this.updateSceneCount();
+  //     })
+  //   });
+  // };
+
   removeScene(sceneKey: string): firebase.Promise<any> {
     // remove sceneKey at /shotlists/projectKey/scenes/sceneKey/
-    return firebase.database().ref().child('shotlists/' + this.projectKey).child('scenes/' + this.sceneKey).remove().then(() =>{
-      return firebase.storage().ref().child('/projects/' + this.projectKey).child('/scenes/' + this.sceneKey).delete()
+    return firebase.database().ref().child('/shotlists/' + this.projectKey).child('/scenes/' + this.sceneKey).remove().then(() => {
+      return firebase.storage().ref().child('/projects/' + this.projectKey).child('/scenes/' + this.sceneKey).child('sceneImage.jpeg').delete()
     }).then(() => {
-    	this.updateSceneCount();
+      this.updateSceneCount();
     });
   };
+
+
+  // removeScene(sceneKey: string): firebase.Promise<any> {
+  //   // remove sceneKey at /shotlists/projectKey/scenes/sceneKey/
+  //   return firebase.database().ref().child('/shotlists/' + this.projectKey).child('/scenes/' + this.sceneKey).remove().then(() => {
+  //     return firebase.storage().ref().child('/projects/' + this.projectKey).child('/scenes/' + this.sceneKey).delete()
+  //   }).then(() => {
+  //   	this.updateSceneCount();
+  //   });
+  // };
 
   removeSceneImage(sceneKey: string): firebase.Promise<any> {
     return firebase.storage().ref().child('/shotlists/' + this.shotlistKey).child('/scenes/' + sceneKey).child('sceneImage.jpeg').delete().then(() => {
@@ -148,7 +168,7 @@ export class ShotlistData {
 
   updateSceneImage(projectImage: string): firebase.Promise<any> {
 //    let newStorageRef = firebase.storage().ref().child('/projects/' + this.projectKey).child('projectImage.jpeg');
-    return firebase.storage().ref().child('/shotlists/' + this.projectKey).child('/scenes/' + this.sceneKey).child('projectImage.jpeg').putString(projectImage, 'base64', {contentType: 'image/jpeg'}).then( savedImage => {
+    return firebase.storage().ref().child('/shotlists/' + this.projectKey).child('/scenes/' + this.sceneKey).child('sceneImage.jpeg').putString(projectImage, 'base64', {contentType: 'image/jpeg'}).then( savedImage => {
         let downloadURL: string = savedImage.downloadURL;
         return firebase.database().ref().child('/shotlists/' + this.projectKey).child('/scenes/' + this.sceneKey).child('imageURL').set(downloadURL);
     });

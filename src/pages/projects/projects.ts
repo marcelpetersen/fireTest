@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AlertController, ActionSheetController } from 'ionic-angular';
 
@@ -8,10 +8,11 @@ import { ProjectData } from '../../providers/project-data';
 import { ShotlistData } from '../../providers/shotlist-data';
 
 
-import { TitlePage } from '../title/title'
+//import { TitlePage } from '../title/title'
 
 //import * as firebase from 'firebase/app'; // app and typings
 
+@IonicPage()
 @Component({
   selector: 'page-projects',
   templateUrl: 'projects.html'
@@ -43,7 +44,7 @@ export class ProjectsPage {
   projectTapped(projectKey) {
     this.projectData.setCurrentProject(projectKey);
     this.shotlistData.setCurrentProject(projectKey);
-    this.navCtrl.push(TitlePage, {
+    this.navCtrl.push('TitlePage', {
       projectKey: projectKey
     });
   }

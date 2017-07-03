@@ -7,24 +7,31 @@
 
 <ion-content>
 
-  <ion-item *ngIf="hasImage && !pictureTaken">
-    <img src="{{currentImage}}" />
-    <ion-fab bottom right>
-		<button ion-fab color="light" (click)="takePicture()"><ion-icon name="camera"></ion-icon></button>
+  <ion-item>
+  
+    <img src="{{placeholderImage}}"  *ngIf="!hasImage && !pictureTaken" (click)="takePicture()" />
+
+    <img src="{{currentImage}}" *ngIf="hasImage && !pictureTaken" />
+    <ion-fab bottom right *ngIf="hasImage && !pictureTaken">
+    <button ion-fab mini color="light"><ion-icon name="arrow-dropleft"></ion-icon></button>
+    <ion-fab-list side="left">
+        <button ion-fab color="light" (click)="takePicture()"><ion-icon name="camera"></ion-icon></button>
 		<button ion-fab color="danger2" (click)="deletePicture2()"><ion-icon name="trash"></ion-icon></button>
+    </ion-fab-list>
 	</ion-fab>
-  </ion-item>
 
-  <ion-item *ngIf="!hasImage && !pictureTaken" (click)="takePicture()">
-    <img src="{{placeholderImage}}" />
-  </ion-item>
+    <img id="camera-image" [hidden]="!pictureTaken" />
+    <ion-fab bottom right [hidden]="!pictureTaken">
+	    <ion-row>
+		    <ion-col>
+				<button ion-fab mini color="danger2" (click)="cancelPicture()"><ion-icon name="close-circle"></ion-icon></button>
+			</ion-col>
+		    <ion-col>
+		    	<button ion-fab mini color="green" (click)="updatePicture()"><ion-icon name="checkmark-circle"></ion-icon></button>
+		    </ion-col>
+		</ion-row>
+    </ion-fab>
 
-  <ion-item [hidden]="!pictureTaken">
-    <img id="camera-image" />
-    <ion-fab bottom right>
-		<button ion-fab color="green" (click)="updatePicture()"><ion-icon name="checkmark-circle"></ion-icon></button>
-		<button ion-fab color="danger2" (click)="cancelPicture()"><ion-icon name="close-circle"></ion-icon></button>
-	</ion-fab>
   </ion-item>
 
   <form [formGroup]="editSceneForm" (submit)="updateScene()" novalidate>

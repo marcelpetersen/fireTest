@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
 import { AlertController, ActionSheetController } from 'ionic-angular';
 
 import { ProjectData } from '../../providers/project-data';
 import { ShotlistData } from '../../providers/shotlist-data';
 
-import { ShotsPage } from '../shots/shots';
+//import { ShotsPage } from '../shots/shots';
 
 import * as firebase from 'firebase';
 
+@IonicPage()
 @Component({
   selector: 'page-scenes',
   templateUrl: 'scenes.html'
@@ -56,7 +57,7 @@ export class ScenesPage {
   shotTapped(event, shotKey) {
     this.projectData.setShotKey(shotKey);
     this.shotlistData.setShotKey(shotKey);
-    this.navCtrl.push(ShotsPage, {
+    this.navCtrl.push('ShotsPage', {
       shotKey: shotKey
     });
   }

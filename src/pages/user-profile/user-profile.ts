@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import * as firebase from 'firebase/app'; // app and typings
 
+@IonicPage()
 @Component({
   selector: 'page-user-profile',
   templateUrl: 'user-profile.html'

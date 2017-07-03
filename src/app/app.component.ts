@@ -4,13 +4,8 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AngularFireAuth } from 'angularfire2/auth';
-import * as firebase from 'firebase/app';
 
-import { HomePage } from '../pages/home/home';
-import { ProjectsPage } from '../pages/projects/projects';
-import { UserProjects } from '../pages/user-projects/user-projects';
-import { UserProfilePage } from '../pages/user-profile/user-profile';
-import { LoginPage } from '../pages/login/login';
+import * as firebase from 'firebase/app';
 
 import { AuthService } from '../providers/auth-service';
 
@@ -32,10 +27,10 @@ export class MyApp {
     this.initializeApp();
     
     this.pages = [
-      { title: 'Home', icon: 'home', component: HomePage },
-      { title: 'My Projects', icon: 'folder', component: UserProjects },
-      { title: 'All Projects', icon: 'planet', component: ProjectsPage },
-      { title: 'Profile', icon: 'contact', component: UserProfilePage }
+      { title: 'Home', icon: 'home', component: 'HomePage' },
+      { title: 'My Projects', icon: 'folder', component: 'UserProjects' },
+      { title: 'All Projects', icon: 'planet', component: 'ProjectsPage' },
+      { title: 'Profile', icon: 'contact', component: 'UserProfilePage' }
     ];
     
     this.authState = afAuth.authState;
@@ -45,10 +40,10 @@ export class MyApp {
       console.log('app.component currentUser:', this.currentUser);
       if (user) {
         // user is logged in
-        this.rootPage = ProjectsPage;
+        this.rootPage = 'ProjectsPage';
       } else {
         // no user logged in
-        this.rootPage = LoginPage;
+        this.rootPage = 'LoginPage';
       }
     });
   }
@@ -67,7 +62,7 @@ export class MyApp {
   }
 
   goToProfile() {
-    this.nav.setRoot(UserProfilePage)
+    this.nav.setRoot('UserProfilePage')
   }
 
   logOut(){

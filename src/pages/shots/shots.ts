@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
 import { AlertController, ActionSheetController } from 'ionic-angular';
 
@@ -8,6 +8,7 @@ import { ShotlistData } from '../../providers/shotlist-data';
 
 import * as firebase from 'firebase';
 
+@IonicPage()
 @Component({
   selector: 'page-shots',
   templateUrl: 'shots.html'

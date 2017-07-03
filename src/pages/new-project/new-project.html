@@ -6,30 +6,28 @@
 
 
 <ion-content>
+
+<ion-item>
+
+    <img src="{{placeholderImage}}"  *ngIf="!pictureTaken" (click)="takePicture()" />
+
+    <img id="camera-image" [hidden]="!pictureTaken" />
+    <ion-fab bottom right [hidden]="!pictureTaken">
+	    <button ion-fab mini color="light"><ion-icon name="arrow-dropleft"></ion-icon></button>
+	    <ion-fab-list side="left">
+	        <button ion-fab color="light" (click)="takePicture()"><ion-icon name="camera"></ion-icon></button>
+			<button ion-fab color="danger2" (click)="cancelPicture()"><ion-icon name="trash"></ion-icon></button>
+	    </ion-fab-list>
+    </ion-fab>
+
+  </ion-item>
+
+
+
   <form [formGroup]="newProjectForm" (submit)="addProject()" novalidate>
 
 	<ion-list>
-
-	  <ion-item *ngIf="!pictureTaken" (click)="takePicture()">
-	    <img src="{{placeholderImage}}" />
-	  </ion-item>
-		
-	  <ion-item [hidden]="!pictureTaken">
-	    <img id="camera-image" />
-	    <ion-fab bottom right>
-			<button ion-fab color="light" (click)="takePicture()"><ion-icon name="camera"></ion-icon></button>
-			<button ion-fab color="danger2" (click)="cancelPicture()"><ion-icon name="trash"></ion-icon></button>
-		</ion-fab>
-	  </ion-item>
-
-<!--
-	  <ion-item (click)="takePicture()">
-	    <img id="camera-image" />
-	  	<img src="{{base64Image}}" *ngIf="pictureTaken" />
-	  	<img src="{{placeholderImage}}" *ngIf="!pictureTaken" />
-	  </ion-item>
--->
-
+	
 	  <ion-item>
 	    <ion-label color="primary" stacked>Project Title</ion-label>
 	    <ion-input formControlName="title" clearInput></ion-input>

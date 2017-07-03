@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { LoadingController, AlertController, ViewController } from 'ionic-angular'
 import { FormBuilder, Validators } from '@angular/forms';
-
-import { RegisterPage } from '../register/register';
-import { ForgotPage } from '../forgot/forgot';
 
 import { AuthService } from '../../providers/auth-service';
 import { EmailValidator } from '../../validators/email';
 
+@IonicPage()
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
@@ -59,11 +57,11 @@ export class LoginPage {
   }
 
   goToForgot(){
-    this.navCtrl.push(ForgotPage);
+    this.navCtrl.push('ForgotPage');
   }
 
   goToRegister(){
-    this.navCtrl.push(RegisterPage);
+    this.navCtrl.push('RegisterPage');
   }
 
   ionViewDidLeave(){
