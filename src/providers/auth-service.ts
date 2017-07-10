@@ -13,8 +13,7 @@ export class AuthService {
   constructor(public afAuth: AngularFireAuth) {
     console.log('Hello AuthService Provider');
     this.authState = afAuth.authState;
-    //afAuth.subscribe((user: firebase.User) => {  does not work!
-    afAuth.authState.subscribe((user: firebase.User) => {
+    this.authState.subscribe((user: firebase.User) => {
       this.currentUser = user;
       console.log('AuthService currentUser:', this.currentUser);
     });
@@ -24,19 +23,31 @@ export class AuthService {
     return this.currentUser !== null;
   }
 
-  loginUser(email: string, password: string): firebase.Promise<any> {
-    return firebase.auth().signInWithEmailAndPassword(email, password)
-    .catch(function(error) {
-      var errorMessage = error.message;
-      console.log('error:', error);
-      console.log('error message:', errorMessage)
+  //  Register User
+  signupUser(newEmail: string, newPassword: string): firebase.Promise<any> {
+    return firebase.auth().createUserWithEmailAndPassword(newEmail, newPassword)
+    .then(function(newUser) {
+      // signUp successful.
+      var userKey: string = newUser.uid;
+      console.log('Account created: ', userKey);
+      // create user profile in /users
+      firebase.database().ref('/users/'+ userKey).set({
+        email: newEmail,
+      });
     });
   }
 
+  //  Login User
+  loginUser(email: string, password: string): firebase.Promise<any> {
+    return firebase.auth().signInWithEmailAndPassword(email, password);
+  }
+
+  //  Reset User Password
   resetPassword(email: string): firebase.Promise<any> {
     return firebase.auth().sendPasswordResetEmail(email);
   }
 
+  //  Logout User
   logoutUser(): firebase.Promise<any> {
     return firebase.auth().signOut().then(function() {
     // Sign-out successful.
@@ -48,21 +59,4 @@ export class AuthService {
     });
   }
 
-  signupUser(newEmail: string, newPassword: string): firebase.Promise<any> {
-    return firebase.auth().createUserWithEmailAndPassword(newEmail, newPassword)
-    .then(function(newUser) {
-      // signUp successful.
-      var userKey: string = newUser.uid;
-      console.log('Account created: ', userKey);
-      // create user profile in /users
-      firebase.database().ref('/users/'+ userKey).set({
-        email: newEmail,
-      });
-    })
-    .catch(function(error) {
-      var errorMessage = error.message;
-      console.log('error:', error);
-      console.log('error message:', errorMessage)
-    });
-  }
 }

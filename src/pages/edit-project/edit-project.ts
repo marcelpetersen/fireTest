@@ -29,9 +29,12 @@ export class EditProject {
 
   public base64Image: string;
   public rawImage: string;
-  public placeholderImage: string = "https://placehold.it/1000x1000?text=Add+a+photo";
   private pictureTaken: boolean;
   private hasImage: boolean;
+
+  public rawGallery: string;
+  public base64Gallery: string;
+  private pictureChosen: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private view: ViewController, public formBuilder: FormBuilder, public projectData: ProjectData, private alert: AlertController, public toastCtrl: ToastController, public appCtrl: App, private camera: Camera) {
     this.editProjectForm = formBuilder.group({
@@ -52,12 +55,11 @@ export class EditProject {
 
   //close this modal
   closeModal() {
-  	this.view.dismiss();
+	  this.view.dismiss();
   }
 
- getProject() {
+  getProject() {
     this.titleRef.on('value', snap => {
-//      this.currentImage = snap.val().imageURL;
       this.currentTitle = snap.val().title;
       this.currentDescription = snap.val().description;
       this.currentPageCount = snap.val().pageCount;
@@ -73,6 +75,7 @@ export class EditProject {
     });
   }
 
+  //  Open Camera
   takePicture() {
     let options = {
       targetWidth: 1000,
@@ -87,37 +90,71 @@ export class EditProject {
     };
     this.camera.getPicture(options).then((imageData) => {
       this.rawImage = imageData;
-      // imageData is a base64 encoded string
       this.base64Image = "data:image/jpeg;base64," + imageData;
       let cameraImageSelector = document.getElementById('camera-image');
       cameraImageSelector.setAttribute('src', this.base64Image);
       this.pictureTaken = true;
+      this.pictureChosen = false;
       }, (err) => {
         console.log(err);
     });
   }
 
-  updatePicture() {
-    this.showToast('top', 'Picture Updated');
-    this.projectData.updateImage(this.rawImage);
-    this.pictureTaken = false;
+  //  Open Photo Gallery
+  openGallery () {
+    let options = {
+      targetWidth: 1000,
+      targetHeight: 1000,
+      quality: 50,
+      correctOrientation: true,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      destinationType: this.camera.DestinationType.DATA_URL,      
+      encodingType: this.camera.EncodingType.JPEG     
+    };
+    this.camera.getPicture(options)
+      .then((imageData) => {
+        this.pictureTaken = false;
+        this.pictureChosen = true;
+        this.rawGallery = imageData;
+        this.base64Gallery = "data:image/jpeg;base64," + imageData;
+        let galleryImageSelector = document.getElementById('gallery-image');
+        galleryImageSelector.setAttribute('src', this.base64Gallery);
+      }, (err) => {
+        console.log(err);
+      });   
   }
 
+  //  Cancel Photo Gallery Selection
+  cancelGallery() {
+    this.pictureChosen = false;
+    this.rawGallery = null;
+    this.base64Gallery = null;
+  }
+
+  // Upload Image
+  updatePicture() {
+      if (this.pictureTaken == true) {
+        let projectImage = this.rawImage;
+        this.projectData.updateImage(projectImage);
+      };
+      if (this.pictureChosen == true) {
+        let galleryImage = this.rawGallery;
+        this.projectData.updateImage(galleryImage);
+      };
+    this.showToast('top', 'Picture Updated');
+    this.pictureTaken = false;
+    this.pictureChosen = false;
+  }
+
+  //  Cancel Camera Picture
   cancelPicture() {
     this.pictureTaken = false;
     this.rawImage = null;
     this.base64Image = null;
   }
 
-  deletePicture(): firebase.Promise<any>{
-    return firebase.storage().ref().child('/projects/' + this.projectKey).child('projectImage.jpeg').delete().then(() => {
-      return firebase.database().ref().child('/projects/' + this.projectKey).child('imageURL').set(null);
-    });
-  }
-
-///////TEST/////////
-
-  deletePicture2() {
+  //  Remove Project Image
+  deletePicture() {
      let prompt = this.alert.create({
       title: 'Delete Picture',
       message: "Are you sure?",
@@ -134,8 +171,10 @@ export class EditProject {
           text: 'Confirm',
           role: 'destructive',
           handler: () => {
-            this.deletePicture();
+            this.projectData.removeImage(this.projectKey);
             this.hasImage = false;
+            this.pictureTaken = false;
+            this.pictureChosen = false;
             console.log('Picture Deleted');
             this.showToast('top', 'Picture Deleted');
           }
@@ -145,9 +184,7 @@ export class EditProject {
     prompt.present();
   }
 
-///////TEST/////////
-
-
+ //   Update Project Form
   updateProject() {
     if (!this.editProjectForm.valid) {
       console.log(this.editProjectForm.value);
@@ -163,6 +200,7 @@ export class EditProject {
     }
   }
 
+  //  Delete Project + Image
   deleteProject() {
      let prompt = this.alert.create({
       title: 'Delete Project',
@@ -182,10 +220,8 @@ export class EditProject {
           handler: () => {
             this.titleRef.off();
             if (this.hasImage == true) {
-//              this.projectData.removeImage(this.projectKey);
-              this.deletePicture();
+              this.projectData.removeImage(this.projectKey);
             };
-//            this.titleRef.off();
             this.projectData.removeProject(this.projectKey);
             this.showToast('top', 'Project Deleted');
             this.view.dismiss();

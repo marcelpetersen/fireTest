@@ -4,20 +4,30 @@
   </ion-navbar>
 </ion-header>
 
+<ion-content padding-bottom no-bounce>
 
-<ion-content>
+<ion-item>
+	
+	<ion-list no-lines *ngIf="!hasImage && !pictureTaken && !pictureChosen">
+	  <button ion-button block large icon-end (click)="takePicture()">
+		Take a picture
+		<ion-icon name="camera"></ion-icon>
+	  </button>
+	  <h2 align="center">or</h2>
+	  <button ion-button block large icon-end (click)="openGallery()">
+		Choose a photo
+		<ion-icon name="images"></ion-icon>
+	  </button>
+	</ion-list>
 
-  <ion-item>
-  
-    <img src="{{placeholderImage}}"  *ngIf="!hasImage && !pictureTaken" (click)="takePicture()" />
-
-    <img src="{{currentImage}}" *ngIf="hasImage && !pictureTaken" />
-    <ion-fab bottom right *ngIf="hasImage && !pictureTaken">
-    <button ion-fab mini color="light"><ion-icon name="arrow-dropleft"></ion-icon></button>
-    <ion-fab-list side="left">
-        <button ion-fab color="light" (click)="takePicture()"><ion-icon name="camera"></ion-icon></button>
-		<button ion-fab color="danger2" (click)="deletePicture2()"><ion-icon name="trash"></ion-icon></button>
-    </ion-fab-list>
+    <img src="{{currentImage}}" *ngIf="hasImage && !pictureTaken && !pictureChosen" />
+    <ion-fab bottom right *ngIf="hasImage && !pictureTaken && !pictureChosen">
+	    <button ion-fab mini color="light"><ion-icon name="arrow-dropleft"></ion-icon></button>
+	    <ion-fab-list side="left">
+	        <button ion-fab color="light" (click)="takePicture()"><ion-icon name="camera"></ion-icon></button>
+	        <button ion-fab color="light" (click)="openGallery()"><ion-icon name="images"></ion-icon></button>
+			<button ion-fab color="danger2" (click)="deletePicture()"><ion-icon name="trash"></ion-icon></button>
+	    </ion-fab-list>
 	</ion-fab>
 
     <img id="camera-image" [hidden]="!pictureTaken" />
@@ -26,9 +36,23 @@
 		    <ion-col>
 				<button ion-fab mini color="danger2" (click)="cancelPicture()"><ion-icon name="close-circle"></ion-icon></button>
 			</ion-col>
-		    <ion-col>
+			<ion-col>
 		    	<button ion-fab mini color="green" (click)="updatePicture()"><ion-icon name="checkmark-circle"></ion-icon></button>
 		    </ion-col>
+
+		</ion-row>
+    </ion-fab>
+
+    <img id="gallery-image" [hidden]="!pictureChosen" />
+    <ion-fab bottom right [hidden]="!pictureChosen">
+	    <ion-row>
+		    <ion-col>
+				<button ion-fab mini color="danger2" (click)="cancelPicture()"><ion-icon name="close-circle"></ion-icon></button>
+			</ion-col>
+			<ion-col>
+		    	<button ion-fab mini color="green" (click)="updatePicture()"><ion-icon name="checkmark-circle"></ion-icon></button>
+		    </ion-col>
+
 		</ion-row>
     </ion-fab>
 
@@ -86,11 +110,6 @@
 	 		 </ion-segment>
 	 	</ion-item>
 
-<!-- 	  <ion-item>
-	    <ion-label color="primary">Start Page</ion-label>
-	    <ion-input formControlName="startPage" [(ngModel)]="currentStartPage" type="number"></ion-input>
-	  </ion-item> -->
-
 	  <ion-item>
 	    <ion-label color="primary">Page Count</ion-label>
 	    <ion-input formControlName="pageCount" [(ngModel)]="currentPageCount" type="number"></ion-input>
@@ -115,16 +134,15 @@
   </form>
 </ion-content>
 
-	
-	
 <ion-footer>
+
   <form [formGroup]="editSceneForm" (submit)="updateScene()" novalidate>
 
 	  <ion-toolbar>
 
 	    <ion-row>
 	      <ion-col>
-	        <button ion-button block color="danger2" type="reset" (click)="deleteScene()">
+	        <button ion-button block color="danger2" type="button" (click)="deleteScene()">
 	          Delete Scene
 	        </button>
 	      </ion-col>
@@ -140,7 +158,7 @@
 
 		<ion-row [hidden]="editSceneForm.pristine">
 		  <ion-col>
-			<button ion-button block color="steel2" type="reset" (click)="closeModal()">
+			<button ion-button block color="steel2" type="button" (click)="closeModal()">
 		      Cancel
 		    </button>
 		  </ion-col>
@@ -150,9 +168,10 @@
 	          Save
 	        </button>
 	      </ion-col>
-
 	    </ion-row>
+	    
 	  </ion-toolbar>
 	  
   </form>
+
 </ion-footer>

@@ -41,6 +41,7 @@ export class ProjectsPage {
     newProjectModal.present();
   }
    
+  //  Go To Project
   projectTapped(projectKey) {
     this.projectData.setCurrentProject(projectKey);
     this.shotlistData.setCurrentProject(projectKey);

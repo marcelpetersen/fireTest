@@ -1,11 +1,11 @@
-<ion-header>
+<ion-header no-border>
   <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>My Profile</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only icon-large>
+      <button ion-button icon-only icon-large (click)="editProfile()">
         <ion-icon name="settings"></ion-icon>
       </button>
     </ion-buttons>    
@@ -13,24 +13,42 @@
 </ion-header>
 
 
-<ion-content padding>
-  <ion-item>
-      <h2 align="center">Logged in as</h2>
-      <h4 align="center">{{ currentUser.email }}</h4>
+<ion-content no-bounce>
+<ion-list no-lines>
+  <ion-item [hidden]="hasImage" color="turq">
+    <ion-row>
+      <ion-col text-center>
+        <div class="userPhoto" style="background-image:url('assets/avatar/avatar.png')"></div>
+        <h2 align="center" *ngIf="hasName" >{{ currentUser.displayName }}</h2>
+        <p align="center" *ngIf="!hasName" >No Display Name</p>    
+      </ion-col>
+    </ion-row>
   </ion-item>
+
+  <ion-item *ngIf="hasImage">
+    <ion-row>
+      <ion-col text-center>
+        <div class="userPhoto" style="background-image:url( {{ currentUser.photoURL }} )"></div>
+      </ion-col>
+    </ion-row>
+  </ion-item>
+
+  <ion-item text-center color="turq">
+    <h4 align="center">Logged in as</h4>
+    <h3 align="center">{{ currentUser.email }}</h3>
+    <ion-badge color="danger2" *ngIf="!emailVerified">unverified</ion-badge>
+    <ion-badge *ngIf="emailVerified">verified</ion-badge>
+  </ion-item>
+
   <ion-item>
       <p align="center">ID: {{ currentUser.uid }}</p>
   </ion-item>
   <ion-item>
       <p align="center">Auth Provider: {{ currentUser.providerId }}</p> 
   </ion-item>
-  <ion-item>
-      <p align="center">Email verified? {{ currentUser.emailVerified }}</p> 
-  </ion-item>
-  <ion-item>
-      <p align="center">Name: {{ currentUser.displayName }}</p>    
-  </ion-item>
+
   <ion-item>
       <p align="center">Photo: {{ currentUser.photoURL }}</p> 
   </ion-item>
+</ion-list>
 </ion-content>

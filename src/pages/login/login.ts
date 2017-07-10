@@ -26,6 +26,7 @@ export class LoginPage {
 
   }
 
+  //  Login User
   loginUser(){
       if (!this.loginForm.valid){
         console.log(this.loginForm.value);

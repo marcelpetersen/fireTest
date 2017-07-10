@@ -22,6 +22,9 @@ export class MyApp {
   private authState: Observable<firebase.User>;
   private currentUser: firebase.User;
 
+  private hasName: boolean;
+  private hasPhoto: boolean;
+
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public afAuth: AngularFireAuth, public authService: AuthService) {
    
     this.initializeApp();
@@ -34,17 +37,27 @@ export class MyApp {
     ];
     
     this.authState = afAuth.authState;
-    //afAuth.subscribe((user: firebase.User) => {  does not work!
-    afAuth.authState.subscribe((user: firebase.User) => {
+    this.authState.subscribe((user: firebase.User) => {
       this.currentUser = user;
       console.log('app.component currentUser:', this.currentUser);
-      if (user) {
+      if (user !== null) {
         // user is logged in
         this.rootPage = 'ProjectsPage';
+        // check for name and photo
+        if (user.displayName !== null) {
+          // no displayName
+          this.hasName = true;
+        }
+        if (user.photoURL !== null) {
+          // no photoURL
+          this.hasPhoto = true;
+        }
       } else {
         // no user logged in
         this.rootPage = 'LoginPage';
       }
+      console.log('hasName:', this.hasName);
+      console.log('hasPhoto:', this.hasPhoto);
     });
   }
 

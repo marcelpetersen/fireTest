@@ -9,7 +9,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content no-bounce>
 
 	<ion-list no-margin>
 
@@ -26,15 +26,15 @@
   <ion-list no-margin no-lines>
     <ion-item color="steel4">
         <ion-row>
-          <ion-col center text-center>
+          <ion-col center text-center col-4>
             <p>SCENES</p>
             <ion-badge color="steel3">{{(currentProject | async)?.sceneCount}}</ion-badge>
           </ion-col>
-          <ion-col center text-center>
+          <ion-col center text-center col-4>
             <p>SHOTS</p>
             <ion-badge color="steel3">{{(currentProject | async)?.shotCount}}</ion-badge>                  
           </ion-col>
-          <ion-col center text-center>
+          <ion-col center text-center col-4>
             <p>PAGES</p>
             <ion-badge color="steel3">{{(currentProject | async)?.pageCount}} &nbsp; {{(currentProject | async)?.pageEighths}}/8</ion-badge>
           </ion-col>
@@ -54,47 +54,25 @@
   <ion-list>
     <ion-item *ngFor="let scene of scenesList | async" (click)="sceneTapped(scene.$key)">
       <ion-row>
-      <ion-col>
+      </ion-row>
+      <ion-row>
+      <ion-col col-7 text-wrap>
         SCENE {{scene.sceneNumber}} - {{scene.sceneLoc}} - {{scene.sceneTime}}
         <h3>{{scene.title}}</h3>
         <p>{{scene.description}}</p>
       </ion-col>
 
-          <ion-col center text-center>
+          <ion-col center text-center col-2>
             <p>SHOTS</p>
             <ion-badge color="steel3">{{scene.shotCount}}</ion-badge>                  
           </ion-col>
 
-          <ion-col center text-center>
+          <ion-col center text-center col-3>
             <p>PAGES</p>
             <ion-badge color="steel3">{{scene.pageCount}} &nbsp; {{scene.pageEighths}}/8</ion-badge>
           </ion-col>
       </ion-row>
     </ion-item>
   </ion-list>
-
-<!--
-  <ion-list>
-    <ion-card margin-vertical *ngFor="let scene of scenesList | async" (click)="sceneTapped(scene.$key)">
-
-      <ion-toolbar color="steel2">
-        <ion-title>SCENE {{scene.sceneNumber}} - {{scene.sceneLoc}} - {{scene.sceneTime}}</ion-title>
-      </ion-toolbar>
-      <img *ngIf="scene.imageURL" src="{{scene.imageURL}}" />
-
-      <ion-card-content no-padding>
-        <ion-item text-wrap text-center>
-          <h3>{{scene.title}}</h3>
-        </ion-item>
-        <ion-item text-wrap color="light">
-          <ion-note text-center>
-       <p>{{scene.description}}      </ion-note>
-        </ion-item>
-      </ion-card-content>
-
-    </ion-card>
-  </ion-list>
-
--->
 
 </ion-content>

@@ -33,6 +33,8 @@ export class RegisterPage {
    *
    * If the form is invalid it will just log the form value, feel free to handle that as you like.
    */
+
+  //  Register User
   signupUser(){
     if (!this.signupForm.valid){
       console.log(this.signupForm.value);

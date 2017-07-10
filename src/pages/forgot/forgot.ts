@@ -31,6 +31,8 @@ export class ForgotPage {
    *
    * If the form is invalid it will just log the form value, feel free to handle that as you like.
    */
+
+  //  Reset User Password
   resetPassword(){
     if (!this.resetPasswordForm.valid){
       console.log(this.resetPasswordForm.value);

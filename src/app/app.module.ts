@@ -19,15 +19,6 @@ import { ProjectData } from '../providers/project-data';
 import { AuthService } from '../providers/auth-service';
 import { ShotlistData } from '../providers/shotlist-data';
 
-// Initialize Firebase
-// export const firebaseConfig = {
-//   apiKey: "AIzaSyDpzfG9WuTE26MAkUTNfEVsr2nlbtXsuAY",
-//   authDomain: "firetest-f8d9c.firebaseapp.com",
-//   databaseURL: "https://firetest-f8d9c.firebaseio.com",
-//   storageBucket: "firetest-f8d9c.appspot.com",
-//   messagingSenderId: "287472207420"
-// };
-
 firebase.initializeApp(config);
 
 @NgModule({

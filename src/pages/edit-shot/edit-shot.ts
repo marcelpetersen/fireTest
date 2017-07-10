@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, AlertController, ToastController, App } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 
+import { Camera } from '@ionic-native/camera';
+
 import { ProjectData } from '../../providers/project-data';
 import { ShotlistData } from '../../providers/shotlist-data';
 
@@ -22,6 +24,7 @@ export class EditShot {
   public shotKey: string;
   private shotRef: any;
 
+  public currentImage: string;
   public currentShotNumber: number;
   public currentShotSub: string;
   public currentTitle: string;
@@ -30,11 +33,19 @@ export class EditShot {
   public currentShotTime: string;
   public currentShotType: string;
   public currentCameraMovement: string;
-  public currentStartPage: number;
   public currentPageCount: number;
   public currentPageEighths: number;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private view: ViewController, public formBuilder: FormBuilder, public projectData: ProjectData, public shotlistData: ShotlistData, private alert: AlertController, public toastCtrl: ToastController, public appCtrl: App) {
+  public base64Image: string;
+  public rawImage: string;
+  private pictureTaken: boolean;
+  private hasImage: boolean;
+
+  public rawGallery: string;
+  public base64Gallery: string;
+  private pictureChosen: boolean;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private view: ViewController, public formBuilder: FormBuilder, public projectData: ProjectData, public shotlistData: ShotlistData, private alert: AlertController, public toastCtrl: ToastController, public appCtrl: App, private camera: Camera) {
     this.editShotForm = formBuilder.group({
       shotNumber: ['', Validators.compose([Validators.minLength(1), Validators.maxLength(3), Validators.required])],
       shotSub: ['', Validators.compose([Validators.maxLength(1)])],
@@ -44,7 +55,6 @@ export class EditShot {
       shotTime: ['', Validators.compose([Validators.required])],
       shotType: ['', Validators.compose([Validators.required])],
       cameraMovement: ['', Validators.compose([Validators.required])],
-      startPage: ['', Validators.compose([Validators.minLength(1), Validators.maxLength(3), Validators.required])],
       pageCount: ['', Validators.compose([Validators.minLength(1), Validators.maxLength(3), Validators.required])],
       pageEighths: ['', Validators.compose([Validators.required])]
     });
@@ -59,12 +69,13 @@ export class EditShot {
     console.log('ionViewDidLoad EditProject');
   }
 
-  //close this modal
   closeModal() {
   	this.view.dismiss();
   }
- getShot() {
-    this.shotRef.once('value', snap => {
+
+  //  Get Current Shot
+  getShot() {
+      this.shotRef.on('value', snap => {
       console.log('shotRef value', snap.val());
       this.currentShotNumber = snap.val().shotNumber;
       this.currentShotSub = snap.val().shotSub;
@@ -74,12 +85,130 @@ export class EditShot {
       this.currentShotTime = snap.val().shotTime;
       this.currentShotType = snap.val().shotType;
       this.currentCameraMovement = snap.val().cameraMovement;
-      this.currentStartPage = snap.val().startPage;
       this.currentPageCount = snap.val().pageCount;
       this.currentPageEighths = snap.val().pageEighths;
+      if (snap.child('imageURL').exists()) {
+        this.currentImage = snap.val().imageURL;
+        this.hasImage = true;
+        console.log('this.hasImage', this.hasImage);
+      } else {
+        this.hasImage = false;
+        console.log('this.hasImage', this.hasImage);
+      };
     });
   }
 
+  //  Open Camera
+  takePicture() {
+    let options = {
+      targetWidth: 1000,
+      targetHeight: 1000,
+      quality: 50,
+      allowEdit: true,
+      correctOrientation: true,
+      saveToPhotoAlbum: false,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    };
+    this.camera.getPicture(options).then((imageData) => {
+      this.rawImage = imageData;
+      this.base64Image = "data:image/jpeg;base64," + imageData;
+      let cameraImageSelector = document.getElementById('camera-image');
+      cameraImageSelector.setAttribute('src', this.base64Image);
+      this.pictureTaken = true;
+      this.pictureChosen = false;
+      }, (err) => {
+        console.log(err);
+    });
+  }
+
+  //  Open Photo Gallery
+  openGallery () {
+    let options = {
+      targetWidth: 1000,
+      targetHeight: 1000,
+      quality: 50,
+      correctOrientation: true,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      destinationType: this.camera.DestinationType.DATA_URL,      
+      encodingType: this.camera.EncodingType.JPEG     
+    };
+    this.camera.getPicture(options)
+      .then((imageData) => {
+        this.pictureTaken = false;
+        this.pictureChosen = true;
+        this.rawGallery = imageData;
+        this.base64Gallery = "data:image/jpeg;base64," + imageData;
+        let galleryImageSelector = document.getElementById('gallery-image');
+        galleryImageSelector.setAttribute('src', this.base64Gallery);
+      }, (err) => {
+        console.log(err);
+      });   
+  }
+
+  //  Cancel Photo Gallery Selection
+  cancelGallery() {
+    this.pictureChosen = false;
+    this.rawGallery = null;
+    this.base64Gallery = null;
+  }
+
+
+  //  Save Image
+  updatePicture() {
+      if (this.pictureTaken == true) {
+        let shotImage = this.rawImage;
+        this.shotlistData.addShotImage(shotImage);
+      };
+      if (this.pictureChosen == true) {
+        let galleryImage = this.rawGallery;
+        this.shotlistData.addShotImage(galleryImage);
+      };
+    this.showToast('top', 'Picture Updated');
+    this.pictureTaken = false;
+    this.pictureChosen = false;
+  }
+
+  //  Cancel Camera
+  cancelPicture() {
+    this.pictureTaken = false;
+    this.rawImage = null;
+    this.base64Image = null;
+  }
+
+  //  Delete Picture
+  deletePicture() {
+     let prompt = this.alert.create({
+      title: 'Delete Picture',
+      message: "Are you sure?",
+      inputs: [],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Delete Canceled');
+          }
+        },
+        {
+          text: 'Confirm',
+          role: 'destructive',
+          handler: () => {
+            this.shotlistData.removeShotImage(this.shotKey);
+            this.hasImage = false;
+            this.pictureTaken = false;
+            this.pictureChosen = false;
+            console.log('Picture Deleted');
+            this.showToast('top', 'Picture Deleted');
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+  //  Update Shot Form
   updateShot() {
     if (!this.editShotForm.valid) {
       console.log(this.editShotForm.value);
@@ -92,16 +221,16 @@ export class EditShot {
       let shotTime = this.editShotForm.value.shotTime;
       let shotType = this.editShotForm.value.shotType;
       let cameraMovement = this.editShotForm.value.cameraMovement;
-      let startPage = this.editShotForm.value.startPage;
       let pageCount = this.editShotForm.value.pageCount;
       let pageEighths = this.editShotForm.value.pageEighths
-      this.shotlistData.updateShot(shotNumber, shotSub, shotTitle, shotDescription, shotLoc, shotTime, shotType, cameraMovement, startPage, pageCount, pageEighths);
+      this.shotlistData.updateShot(shotNumber, shotSub, shotTitle, shotDescription, shotLoc, shotTime, shotType, cameraMovement, pageCount, pageEighths);
       console.log('Shot Updated');
       this.showToast('bottom', 'Shot Updated');
       this.view.dismiss();
     }
   }
 
+  //  Delete Shot + Image
   deleteShot() {
      let prompt = this.alert.create({
       title: 'Delete Shot',
@@ -119,12 +248,15 @@ export class EditShot {
           text: 'Confirm',
           role: 'destructive',
           handler: () => {
-            console.log('Save clicked');
+             this.shotRef.off();
+             if (this.hasImage == true) {
+              this.shotlistData.removeShotImage(this.shotKey);
+             };
             this.shotlistData.removeShot(this.shotKey);
+            this.showToast('top', 'Scene Deleted');
             this.view.dismiss();
             this.appCtrl.getRootNav().pop();
-            console.log('Shot Deleted');
-            this.showToast('bottom', 'Shot Deleted');
+            console.log('Scene Deleted');
           }
         }
       ]
@@ -135,7 +267,7 @@ export class EditShot {
   showToast(position: string, message: string) {
     let toast = this.toastCtrl.create({
       message: message,
-      duration: 2000,
+      duration: 3000,
       position: position
     });
     toast.present(toast);
@@ -143,6 +275,7 @@ export class EditShot {
 
   ionViewDidLeave() {
     console.log('ionViewDidLeave EditShotModal');
+    this.shotRef.off();
   }
   
 }

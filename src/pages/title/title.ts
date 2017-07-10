@@ -52,6 +52,7 @@ export class TitlePage {
     newSceneModal.present();
   }
 
+  // Go To Scene
   sceneTapped(sceneKey: string) {
     this.projectData.setSceneKey(sceneKey);
     this.shotlistData.setSceneKey(sceneKey);

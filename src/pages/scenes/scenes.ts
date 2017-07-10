@@ -54,6 +54,7 @@ export class ScenesPage {
     newShotModal.present();
   }
 
+  //  Go To Shot
   shotTapped(event, shotKey) {
     this.projectData.setShotKey(shotKey);
     this.shotlistData.setShotKey(shotKey);

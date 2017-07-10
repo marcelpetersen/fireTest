@@ -13,7 +13,7 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content no-bounce>
 	<ion-list>
  		<ion-card margin-vertical *ngFor="let project of projectsList | async"  (click)="projectTapped(project.$key)">
         <ion-toolbar color="primary">
@@ -32,15 +32,15 @@
         <ion-list no-margin no-lines>
           <ion-item color="steel4">
               <ion-row>
-                <ion-col center text-center>
+                <ion-col center text-center col-4>
                   <p>SCENES</p>
                   <ion-badge color="steel3">{{project.sceneCount}}</ion-badge>
                 </ion-col>
-                <ion-col center text-center>
+                <ion-col center text-center col-4>
                   <p>SHOTS</p>
                   <ion-badge color="steel3">{{project.shotCount}}</ion-badge>                  
                 </ion-col>
-                <ion-col center text-center>
+                <ion-col center text-center col-4>
                   <p>PAGES</p>
                   <ion-badge color="steel3">{{project.pageCount}} &nbsp; {{project.pageEighths}}/8</ion-badge>
                 </ion-col>

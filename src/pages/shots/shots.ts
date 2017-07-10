@@ -25,7 +25,6 @@ export class ShotsPage {
 
   public takesList: FirebaseListObservable<any>;
 
-
   constructor(public navCtrl: NavController, public navParams: NavParams, db: AngularFireDatabase, public alertCtrl: AlertController,
     public actionSheetCtrl: ActionSheetController, public projectData: ProjectData, public shotlistData: ShotlistData, private modal: ModalController) {
 
@@ -44,20 +43,47 @@ export class ShotsPage {
     console.log('takeCount:', this.shotlistData.takeCount)
   }
 
+  //  Open EditShot Modal
   editShot() {
     const editShotModal = this.modal.create('EditShot');
     editShotModal.present();
   }
 
-  //Add new Take
+  //  Shot has takes?
+  get hasTakes() {
+    if (this.shotlistData.takeCount > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  //  Add new Take
   addTake() {
     console.log('addTake');
     this.shotlistData.createTake();
   }
 
+  //  Delete Take
   deleteTake(takeKey: string) {
     console.log('addTake');
     this.shotlistData.removeTake(takeKey);
+  }
+
+  //  Add Take Note
+  takeNote() {
+    console.log('Take Note');
+    // this.shotlistData.updateTake(takeNote);
+  }
+
+  //  Thumb Take
+  thumbTake() {
+
+  }
+
+  //  Star Take
+  starTake() {
+    this.shotlistData.starTake();
   }
 
 }

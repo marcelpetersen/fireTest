@@ -6,8 +6,8 @@
 
 </ion-header>
 
+<ion-content padding no-bounce>
 
-<ion-content padding>
   <form [formGroup]="resetPasswordForm" (submit)="resetPassword()" novalidate>
 
     <ion-item>
@@ -15,6 +15,7 @@
       <ion-input formControlName="email" type="email" placeholder="Your email address"
         [class.invalid]="!resetPasswordForm.controls.email.valid && resetPasswordForm.controls.email.dirty"></ion-input>
     </ion-item>
+    
     <ion-item class="error-message" *ngIf="!resetPasswordForm.controls.email.valid  && resetPasswordForm.controls.email.dirty">
       <p>Please enter a valid email.</p>
     </ion-item>

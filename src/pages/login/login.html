@@ -6,8 +6,8 @@
 
 </ion-header>
 
+<ion-content padding no-bounce>
 
-<ion-content padding>
   <form [formGroup]="loginForm" (submit)="loginUser()" novalidate>
 
     <ion-item>
@@ -48,7 +48,5 @@
   <button ion-button block clear icon-right (click)="goToRegister()">
     Create a new account
   </button>
-
-
 
 </ion-content>

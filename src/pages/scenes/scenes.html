@@ -9,7 +9,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content no-bounce>
 
   <img src="{{ (currentScene | async)?.imageURL }}" />
 
@@ -17,36 +17,23 @@
     <ion-item color="steel4">
 
       <ion-row>
-        <ion-col>
+        <ion-col col-7 text-wrap>
           SCENE {{(currentScene | async)?.sceneNumber}} - {{(currentScene | async)?.sceneLoc}} - {{(currentScene | async)?.sceneTime}}
           <h3>{{(currentScene | async)?.title}}</h3>
           <p>{{(currentScene | async)?.description}}</p>
         </ion-col>
 
-          <ion-col center text-center>
+          <ion-col center text-center col-2>
             <p>SHOTS</p>
             <ion-badge color="steel3">{{(currentScene | async)?.shotCount}}</ion-badge>                  
           </ion-col>
 
-          <ion-col center text-center>
+          <ion-col center text-center col-3>
             <p>PAGES</p>
             <ion-badge color="steel3">{{(currentScene | async)?.pageCount}} &nbsp; {{(currentScene | async)?.pageEighths}}/8</ion-badge>
           </ion-col>
       </ion-row>
 
-
-
-<!--         <ion-row>
-          <ion-col center text-center>
-            <p>SHOTS</p>
-            <ion-badge color="steel3">{{(currentScene | async)?.shotCount}}</ion-badge>                  
-          </ion-col>
-
-          <ion-col center text-center>
-            <p>PAGES</p>
-            <ion-badge color="steel3">{{(currentScene | async)?.pageCount}} &nbsp; {{(currentScene | async)?.pageEighths}}/8</ion-badge>
-          </ion-col>
-        </ion-row> -->
     </ion-item>
   </ion-list>
 
@@ -62,39 +49,22 @@
   <ion-list>
     <ion-item *ngFor="let shot of shotsList | async" (click)="shotTapped($event, shot.$key)">
       <ion-row>
-      <ion-col>
+      <ion-col col-7 text-wrap>
       SHOT {{shot.shotNumber}} - {{shot.shotLoc}} - {{shot.shotTime}}
       <h3>{{shot.title}}</h3>
       <p>{{shot.description}}</p>
       </ion-col>
-          <ion-col center text-center>
+          <ion-col center text-center col-2>
             <p>TAKES</p>
             <ion-badge color="steel3">{{shot.takeCount}}</ion-badge>                  
           </ion-col>
 
-          <ion-col center text-center>
+          <ion-col center text-center col-3>
             <p>PAGES</p>
             <ion-badge color="steel3">{{shot.pageCount}} &nbsp; {{shot.pageEighths}}/8</ion-badge>
           </ion-col>
       </ion-row>
     </ion-item>
   </ion-list>
-
-<!--
-  <ion-list>
-    <ion-card margin-vertical *ngFor="let shot of shotsList | async" (click)="shotTapped($event, shot.$key)">
-      <ion-toolbar color="steel2">
-          <ion-title>{{shot.title}}</ion-title>
-      </ion-toolbar>
-      <ion-card-content no-padding>
-        <ion-item text-wrap color="light">
-          <ion-note text-center>
-            <p>{{shot.description}}</p>
-          </ion-note>
-        </ion-item>
-      </ion-card-content>
-    </ion-card>
-  </ion-list>
--->
 
 </ion-content>
