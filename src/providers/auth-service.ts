@@ -2,6 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { AngularFireAuth } from 'angularfire2/auth';
+
 // Do not import from 'firebase' as you'll lose the tree shaking benefits
 import * as firebase from 'firebase/app';
 
@@ -47,16 +48,27 @@ export class AuthService {
     return firebase.auth().sendPasswordResetEmail(email);
   }
 
+  //  Verify User Email
+  verifyEmail(): firebase.Promise<any> {
+    return firebase.auth().currentUser.sendEmailVerification().then(() => {
+      // Email sent.
+      console.log('Verification email sent', this.currentUser.email);
+    }, function(error) {
+      // An error happened.
+    });
+  }
+
   //  Logout User
   logoutUser(): firebase.Promise<any> {
     return firebase.auth().signOut().then(function() {
     // Sign-out successful.
     })
-    .catch(function(error) {
-      var errorMessage = error.message;
-      console.log('error:', error);
-      console.log('error message:', errorMessage)
-    });
+    // .catch(function(error) {
+    //   var errorMessage = error.message;
+    //   console.log('error:', error);
+    //   console.log('error message:', errorMessage)
+    // })
+    ;
   }
 
 }

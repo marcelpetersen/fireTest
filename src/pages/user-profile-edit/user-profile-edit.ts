@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, AlertController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, AlertController, ToastController, ActionSheetController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../providers/auth-service';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -40,7 +40,7 @@ export class UserProfileEditPage {
   public base64Gallery: string;
   private pictureChosen: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private view: ViewController, private alert: AlertController, public toastCtrl: ToastController, public formBuilder: FormBuilder, public afAuth: AngularFireAuth, public authService: AuthService, private camera: Camera) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private view: ViewController, private alert: AlertController, public toastCtrl: ToastController, public actionSheetCtrl: ActionSheetController, public formBuilder: FormBuilder, public afAuth: AngularFireAuth, public authService: AuthService, private camera: Camera) {
     this.usersRef = firebase.database().ref().child('users');
     this.userKey = this.authService.currentUser.uid;
     this.userProfileRef = this.usersRef.child(this.userKey);
@@ -74,6 +74,7 @@ export class UserProfileEditPage {
 
     this.editProfileForm = formBuilder.group({
       userDisplayName: ['', Validators.compose([Validators.minLength(3), Validators.maxLength(20), Validators.required])],
+      userEmail: [''],
 //      userImageURL: ['', Validators.compose([Validators.minLength(3), Validators.maxLength(100), Validators.required])]
     });
   }
@@ -85,6 +86,68 @@ export class UserProfileEditPage {
   //close this modal
   closeModal() {
 	  this.view.dismiss();
+  }
+
+  presentActionSheet1() {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Edit Photo',
+      buttons: [
+       {
+          text: 'Take a photo',
+          handler: () => {
+            this.takePicture();
+            console.log('Camera clicked');
+          }
+        }, {
+          text: 'Choose an image',
+          handler: () => {
+            this.openGallery();
+            console.log('Gallery clicked');
+          }
+        }, {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    actionSheet.present();
+  }
+
+  presentActionSheet2() {
+    let actionSheet = this.actionSheetCtrl.create({
+      buttons: [
+       {
+          text: 'Take a photo',
+          handler: () => {
+            this.takePicture();
+            console.log('Camera clicked');
+          }
+        }, {
+          text: 'Choose an image',
+          handler: () => {
+            this.openGallery();
+            console.log('Gallery clicked');
+          }
+        }, {
+          text: 'Remove',
+          role: 'destructive',
+          handler: () => {
+            this.deleteUserImage();
+            console.log('Remove clicked');
+          }
+        }, {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    actionSheet.present();
   }
 
   //  Open Camera
@@ -110,6 +173,13 @@ export class UserProfileEditPage {
       }, (err) => {
         console.log(err);
     });
+  }
+
+  // Cancel Camera Image
+  cancelPicture() {
+    this.pictureTaken = false;
+    this.rawImage = null;
+    this.base64Image = null;
   }
 
   //  Open Photo Gallery
@@ -143,28 +213,6 @@ export class UserProfileEditPage {
     this.base64Gallery = null;
   }
 
-  // updatePicture() {
-  //     if (this.pictureTaken == true) {
-  //       let projectImage = this.rawImage;
-  //       this.projectData.updateImage(projectImage);
-  //     };
-  //     if (this.pictureChosen == true) {
-  //       let galleryImage = this.rawGallery;
-  //       this.projectData.updateImage(galleryImage);
-  //     };
-  //   this.showToast('top', 'Picture Updated');
-  //   // this.projectData.updateImage(this.rawImage);
-  //   this.pictureTaken = false;
-  //   this.pictureChosen = false;
-  // }
-
-  // Cancel Camer Image
-  cancelPicture() {
-    this.pictureTaken = false;
-    this.rawImage = null;
-    this.base64Image = null;
-  }
-
   //  Delete User Photo
   deleteUserImage(): firebase.Promise<any>{
     return firebase.storage().ref().child('/userPhotos/' + this.userKey).child('userPhoto.jpeg').delete().then(() => {
@@ -178,7 +226,6 @@ export class UserProfileEditPage {
       });
     });
   }
-
 
   updatePicture() {
       if (this.pictureTaken == true) {
@@ -197,6 +244,7 @@ export class UserProfileEditPage {
   addUserImage(userPhoto: string): firebase.Promise<any> {
     return firebase.storage().ref().child('/userPhotos/' + this.userKey).child('userPhoto.jpeg').putString(userPhoto, 'base64', {contentType: 'image/jpeg'}).then( savedImage => {
       let downloadURL: string = savedImage.downloadURL;
+      this.userImageURL = downloadURL;
       return firebase.database().ref().child('/users/' + this.userKey).child('photoURL').set(downloadURL).then(() => {
         return firebase.auth().currentUser.updateProfile({
           displayName: this.userDisplayName,
@@ -267,6 +315,10 @@ export class UserProfileEditPage {
       ]
     });
     prompt.present();
+  }
+
+  verifyEmail() {
+    this.authService.verifyEmail();
   }
 
   showToast(position: string, message: string) {

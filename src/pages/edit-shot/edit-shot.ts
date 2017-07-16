@@ -76,7 +76,7 @@ export class EditShot {
   //  Get Current Shot
   getShot() {
       this.shotRef.on('value', snap => {
-      console.log('shotRef value', snap.val());
+      // console.log('shotRef value', snap.val());
       this.currentShotNumber = snap.val().shotNumber;
       this.currentShotSub = snap.val().shotSub;
       this.currentTitle = snap.val().title;
@@ -249,14 +249,14 @@ export class EditShot {
           role: 'destructive',
           handler: () => {
              this.shotRef.off();
-             if (this.hasImage == true) {
-              this.shotlistData.removeShotImage(this.shotKey);
-             };
+             // if (this.hasImage == true) {
+             //  this.shotlistData.removeShotImage(this.shotKey);
+             // };
             this.shotlistData.removeShot(this.shotKey);
-            this.showToast('top', 'Scene Deleted');
+            this.showToast('top', 'Shot Deleted');
             this.view.dismiss();
             this.appCtrl.getRootNav().pop();
-            console.log('Scene Deleted');
+            console.log('Shot Deleted');
           }
         }
       ]

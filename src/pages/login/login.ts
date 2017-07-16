@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { LoadingController, AlertController, ViewController } from 'ionic-angular'
+import { LoadingController, AlertController } from 'ionic-angular'
 import { FormBuilder, Validators } from '@angular/forms';
 
 import { AuthService } from '../../providers/auth-service';
@@ -17,7 +17,7 @@ export class LoginPage {
   public loading: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public formBuilder: FormBuilder, public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController, public viewCtrl: ViewController, public authService: AuthService) {
+    public loadingCtrl: LoadingController, public authService: AuthService) {
 
       this.loginForm = formBuilder.group({
         email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],

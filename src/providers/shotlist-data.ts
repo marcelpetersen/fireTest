@@ -52,8 +52,6 @@ export class ShotlistData {
     this.sceneKey = sceneKey;
     this.sceneRef = this.scenesRef.child(this.sceneKey);
     this.shotsRef = this.rootRef.child('/shotlists/' + this.shotlistKey + '/scenes/' + this.sceneKey + '/shots/');
-//    console.log('shotlistData scenKey:', this.sceneKey);
-
   }
 
   setShotKey(shotKey) {
@@ -122,9 +120,21 @@ export class ShotlistData {
     }); 
   }
 
+
   removeScene(sceneKey: string): firebase.Promise<any> {
+    //  Check for imageURL and delete image from storage
+    firebase.database().ref().child('shotlists/' + this.projectKey).child('scenes/' + sceneKey).once('value', snap => {
+      if (snap.child('imageURL').exists()) {
+        let hasImage = true;
+        console.log('removeScene.hasImage', hasImage);
+        this.removeSceneImage(sceneKey);
+      } else {
+        let hasImage = false;
+        console.log('removeScene.hasImage', hasImage);
+      };
+    });
     // remove sceneKey at /shotlists/projectKey/scenes/sceneKey/
-    return firebase.database().ref().child('/shotlists/' + this.projectKey).child('/scenes/' + this.sceneKey).remove().then(() => {
+    return firebase.database().ref().child('/shotlists/' + this.projectKey).child('/scenes/' + sceneKey).remove().then(() => {
       this.updateSceneCount();
     });
   };
@@ -180,17 +190,50 @@ export class ShotlistData {
       takeCount: takeCount,
     }).then(() => {
       this.updateShotCount();
+      this.updateProjectShotCount();
     });
   }
 
+  //  Update Shot count for current scene
   updateShotCount() {
     this.shotsRef.once('value', snapshot => {
-    console.log(snapshot.numChildren());
+    //console.log(snapshot.numChildren());
     var shotCount = snapshot.numChildren();
-    this.projectRef.update({shotCount: shotCount});
     this.sceneRef.update({shotCount: shotCount});
-    // this.shotlistRef.child('stats').update({shotCount: shotCount});
     });
+  }
+
+//  Update shotcount for entire project by looping over all scenes and getting number of shots per
+  updateProjectShotCount() {
+
+    this.scenesRef.once('value', snap => {
+      var snapSceneCount: number = snap.numChildren();
+      console.log('updateProjectShotCount - sceneCount:', snapSceneCount );
+      var counts =[];
+      // snap each scene
+      snap.forEach((childSnap) => {
+        let snapSceneKey = childSnap.val().key;
+        console.log(snapSceneKey)
+        this.scenesRef.child(snapSceneKey + '/shots/').once('value', snap2 => {
+          var snapShotCount: number = snap2.numChildren();
+          console.log('updateProjectShotCount - snapShotCount:', snapShotCount );
+          var i = snap2.numChildren();
+          counts.push(i);
+          console.log('var i:', i);
+        });
+
+      });
+      console.log('counts:', counts);
+      var sum = 0;
+      counts.forEach(function(value) { sum += value; });
+      console.log('sum:', sum);
+        this.projectRef.update({shotCount: sum});
+        this.shotlistRef.child('stats').update({shotCount: sum});
+    });
+    // this.shotsRef.once('value', snapshot => {
+    // var shotCount = snapshot.numChildren();
+    // this.sceneRef.update({shotCount: shotCount});
+    // });
   }
 
   updateShot(shotNumber: number, shotSub: number, shotTitle: string, shotDescription: string, shotLoc: string, shotTime: string, shotType: string, cameraMovement: string, pageCount: number, pageEighths: number): firebase.Promise<any> {
@@ -208,13 +251,27 @@ export class ShotlistData {
     });
   }
 
+  //Delete Shot + Image
   removeShot(shotKey: string): firebase.Promise<any> {
+    //  Check for imageURL and delete image from storage
+    firebase.database().ref().child('shotlists/' + this.projectKey).child('scenes/' + this.sceneKey).child('shots/' + shotKey).once('value', snap => {
+      if (snap.child('imageURL').exists()) {
+        let hasImage = true;
+        console.log('removeShot.hasImage', hasImage);
+        this.removeShotImage(shotKey);
+      } else {
+        let hasImage = false;
+        console.log('removeShot.hasImage', hasImage);
+      };
+    });
     // remove shotKey at /shotlists/projectKey/scenes/sceneKey/shots/shotKey
-    return firebase.database().ref().child('shotlists/' + this.projectKey).child('scenes/' + this.sceneKey).child('shots/' + this.shotKey).remove()
+    return firebase.database().ref().child('shotlists/' + this.projectKey).child('scenes/' + this.sceneKey).child('shots/' + shotKey).remove()
     .then(() => {
       this.updateShotCount();
+      this.updateProjectShotCount();
     });
   }
+
 
   addShotImage(shotImage: string): firebase.Promise<any> {
     return firebase.storage().ref().child('/shotlists/' + this.projectKey).child('/scenes/' + this.sceneKey).child('/shots/' + this.shotKey).child('shotImage.jpeg').putString(shotImage, 'base64', {contentType: 'image/jpeg'}).then( savedImage => {

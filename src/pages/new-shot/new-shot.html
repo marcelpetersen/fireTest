@@ -5,7 +5,7 @@
 </ion-header>
 
 
-<ion-content no-bounce>
+<ion-content padding-bottom>
 
   <ion-item>
 	
@@ -49,17 +49,17 @@
 	<ion-list>
 
 	  <ion-item>
-	    <ion-label color="primary" stacked>Shot Number</ion-label>
+	    <ion-label stacked>Shot Number</ion-label>
 	    <ion-input formControlName="shotNumber" type="number" placeholder="0"></ion-input>
 	  </ion-item>
 
 	  <ion-item>
-	    <ion-label color="primary" stacked>Sub</ion-label>
+	    <ion-label stacked>Sub</ion-label>
 	    <ion-input formControlName="shotSub" placeholder="none"></ion-input>
 	  </ion-item>
 
 		<ion-item>
-			<ion-segment formControlName="shotLoc">
+			<ion-segment color="steel1" formControlName="shotLoc">
 		   		<ion-segment-button value="INT">
 		    		Interior
 		   		</ion-segment-button>
@@ -72,7 +72,7 @@
 	 		 </ion-segment>
 	 	</ion-item>
 		<ion-item>
-			<ion-segment formControlName="shotTime">
+			<ion-segment color="steel1" formControlName="shotTime">
 		   		<ion-segment-button value="DAY">
 		    		Day
 		   		</ion-segment-button>
@@ -86,19 +86,19 @@
 	 	</ion-item>	  
 	 	
 	  <ion-item>
-	    <ion-label color="primary" stacked>Shot Title</ion-label>
+	    <ion-label stacked>Shot Title</ion-label>
 	    <ion-input formControlName="title" clearInput></ion-input>
 	  </ion-item>
 
 	  <ion-item>
-	    <ion-label color="primary" stacked>Shot Description</ion-label>
+	    <ion-label stacked>Shot Description</ion-label>
 	    <ion-input formControlName="description" clearInput></ion-input>
 	  </ion-item>
 
 
 
 	  <ion-item>
-	    <ion-label color="primary" stacked>Shot Type</ion-label>
+	    <ion-label stacked>Shot Type</ion-label>
 	    <ion-select formControlName="shotType" placeholder="Choose one">
 	      <ion-option value="cu">CU</ion-option>
 	      <ion-option value="mcu">MCU</ion-option>
@@ -108,7 +108,7 @@
 	    </ion-select>
 	  </ion-item>
 	  <ion-item>
-	    <ion-label color="primary" stacked>Camera Movement</ion-label>
+	    <ion-label stacked>Camera Movement</ion-label>
 	    <ion-select formControlName="cameraMovement" placeholder="Choose one">
 	      <ion-option value="pan">Pan</ion-option>
 	      <ion-option value="tilt">Tilt</ion-option>
@@ -117,12 +117,12 @@
 	  </ion-item>
 
 	  <ion-item>
-	    <ion-label color="primary" stacked>Page Count</ion-label>
+	    <ion-label stacked>Page Count</ion-label>
 	    <ion-input formControlName="pageCount" type="number" placeholder="0"></ion-input>
 	  </ion-item>
 	  
 	  <ion-item>
-	    <ion-label color="primary" stacked>Eighths</ion-label>
+	    <ion-label stacked>Eighths</ion-label>
 	    <ion-select interface="popover" formControlName="pageEighths" placeholder="0/8">
 	      <ion-option value="0">0/8</ion-option>
 	      <ion-option value="1">1/8</ion-option>

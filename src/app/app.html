@@ -1,4 +1,4 @@
-<ion-menu [content]="content">
+<ion-menu [content]="content" swipeEnabled="false">
   <ion-header no-border>
     <ion-toolbar color="primary">
       <ion-title>SHOTLIST.IO</ion-title>
@@ -6,28 +6,30 @@
   </ion-header>
 
   <ion-content class="content-turq" no-bounce>
-  <button color="primary" menuClose ion-item text-wrap detail-none *ngIf="!hasPhoto" (click)="goToProfile()">
+
+<!--  No Image   -->
+  <button color="primary" menuClose ion-item text-wrap detail-none [hidden]="hasPhoto" (click)="goToProfile()">
     <ion-row>
       <ion-col text-center>
-        <h2 align="center">Welcome</h2>
-        <div class="userPhotoMenu" style="background-image:url('assets/avatar/avatar.png')"></div>
+        <div class="userPhoto" style="background-image:url('assets/avatar/avatar.png')"></div>
         <h2 align="center" *ngIf="hasName" >{{ currentUser?.displayName }}</h2>
         <h3 align="center" *ngIf="!hasName" >{{ currentUser?.email }}</h3>    
       </ion-col>
     </ion-row>
-    </button>
+  </button>
 
-  <button menuClose ion-item text-wrap detail-none *ngIf="hasPhoto" (click)="goToProfile()">
+<!--  Has Image   -->
+  <button color="primary" menuClose ion-item text-wrap detail-none [hidden]="!hasPhoto" (click)="goToProfile()">
     <ion-row>
       <ion-col text-center>
-        <h2 align="center">Welcome</h2>
-        <div class="userPhotoMenu" style="background-image:url( {{ currentUser.photoURL }} )"></div>
+        <img src="{{currentUser?.photoURL}}" class="userPhoto" />
         <h2 align="center" *ngIf="hasName" >{{ currentUser?.displayName }}</h2>
         <h2 align="center" *ngIf="!hasName" >{{ currentUser?.email }}</h2>    
       </ion-col>
     </ion-row>
   </button>
     
+<!--  MENU BUTTONS   -->
     <ion-list no-lines>
       <button large color="primary" detail-none menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
         <ion-icon [name]="p.icon" item-left></ion-icon>
@@ -37,6 +39,7 @@
 
   </ion-content>
 
+<!--  LOGOUT FOOTER   -->
   <ion-footer no-border>
     <button large ion-button full clear icon-right menuClose detail-none color="white" (click)="logOut()">
       Logout

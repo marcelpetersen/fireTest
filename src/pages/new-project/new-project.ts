@@ -132,7 +132,11 @@ export class NewProject {
         this.projectData.updateImage(galleryImage);
       };
       this.view.dismiss();
-      }
+      // this.navCtrl.push('TitlePage', {
+      //   projectKey: this.projectData.projectKey
+      // });
+ 
+    }
   }
 
   ionViewDidLeave() {

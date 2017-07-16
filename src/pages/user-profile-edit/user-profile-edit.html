@@ -1,85 +1,107 @@
 <ion-header no-border>
   <ion-navbar color="primary">
     <ion-title>Edit Profile</ion-title>
-<!--       <ion-buttons end>
-      <button ion-button icon-only icon-large (click)="closeModal()">
-        <ion-icon name="close-circle"></ion-icon>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="cancelGallery()" [hidden]="!pictureChosen">
+        <ion-icon name="trash"></ion-icon>
       </button>
-    </ion-buttons> -->
+      <button ion-button icon-only (click)="cancelPicture()" [hidden]="!pictureTaken">
+        <ion-icon name="trash"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="updatePicture()" [hidden]="!pictureTaken && !pictureChosen">
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 
 <ion-content no-bounce>
 
-<ion-list no-lines no-margin>
+<!-- <ion-list no-lines no-margin> -->
 
+  <!--  No Image   -->
   <ion-item *ngIf="!hasImage && !pictureTaken && !pictureChosen" color="primary">
     <ion-row>
       <ion-col text-center>
-        <div class="userPhoto" style="background-image:url('assets/avatar/avatar.png')"></div>
-          <ion-fab bottom right>
-            <button ion-fab mini color="light"><ion-icon name="arrow-dropleft"></ion-icon></button>
-            <ion-fab-list side="left">
-              <button ion-fab color="light" (click)="takePicture()"><ion-icon name="camera"></ion-icon></button>
-              <button ion-fab color="light" (click)="openGallery()"><ion-icon name="images"></ion-icon></button>
-              <button ion-fab color="danger2" (click)="deletePicture2()"><ion-icon name="trash"></ion-icon></button>
-            </ion-fab-list>
-          </ion-fab>
+        <div class="userPhoto" style="background-image:url('assets/avatar/avatar.png')" (click)="presentActionSheet1()"></div>
+        <h2>Tap to edit</h2>
       </ion-col>
     </ion-row>
   </ion-item>
 
-  
-
-  <ion-item [hidden]="!pictureTaken" >
-    <img id="camera-image" />
-    <ion-fab bottom right>
-      <ion-row>
-        <ion-col>
-          <button ion-fab mini color="danger2"><ion-icon name="close-circle"></ion-icon></button>
-        </ion-col>
-        <ion-col>
-          <button ion-fab mini color="green"><ion-icon name="checkmark-circle"></ion-icon></button>
-        </ion-col>
-      </ion-row>
-    </ion-fab>
-  </ion-item>
-  
-<!--
-  <ion-item [hidden]="!pictureTaken" >
-    <img id="camera-image" class="userPhoto" />
-    <div class="userPhoto" style="background-image:url('camera-image')"></div>
-    <ion-fab bottom right>
-      <ion-row>
-        <ion-col>
-          <button ion-fab mini color="danger2"><ion-icon name="close-circle"></ion-icon></button>
-        </ion-col>
-        <ion-col>
-          <button ion-fab mini color="green"><ion-icon name="checkmark-circle"></ion-icon></button>
-        </ion-col>
-      </ion-row>
-    </ion-fab>
-  </ion-item>
-
-  <ion-item *ngIf="hasImage">
+  <!--  Has Image   -->
+  <ion-item *ngIf="hasImage && !pictureTaken && !pictureChosen" color="primary">
     <ion-row>
       <ion-col text-center>
-        <div class="userPhoto" style="background-image:url( {{ currentUser.photoURL }} )"></div>
+        <img src="{{userImageURL}}" class="userPhoto" (click)="presentActionSheet2()" />
+        <h2>Tap to edit</h2>
       </ion-col>
     </ion-row>
   </ion-item>
- -->
-</ion-list>
 
+  <!--  Camera Picture Taken   -->
+  <ion-item [hidden]="!pictureTaken" color="primary">
+    <ion-row>
+      <ion-col text-center>
+
+        <img id="camera-image" class="userPhoto" />
+
+        <ion-fab bottom left>
+          <button ion-fab mini color="danger2" (click)="cancelPicture()"><ion-icon name="close-circle"></ion-icon></button>
+        </ion-fab>
+
+        <ion-fab bottom right>
+          <button ion-fab mini color="green" (click)="updatePicture()"><ion-icon name="checkmark-circle"></ion-icon></button>
+        </ion-fab>
+
+      </ion-col>
+    </ion-row>
+  </ion-item>
+
+
+  <!--  Gallery Image Chosen   -->
+  <ion-item [hidden]="!pictureChosen" color="primary">
+    <ion-row>
+      <ion-col text-center> 
+
+        <img id="gallery-image" class="userPhoto" />
+
+        <ion-fab bottom left>
+          <button ion-fab mini color="danger2" (click)="cancelGallery()"><ion-icon name="close-circle"></ion-icon></button>
+        </ion-fab>
+
+        <ion-fab bottom right>
+          <button ion-fab mini color="green" (click)="updatePicture()"><ion-icon name="checkmark-circle"></ion-icon></button>
+        </ion-fab>
+      </ion-col>
+    </ion-row>
+  </ion-item>
+  
+<!-- </ion-list>
+ -->
 
 
   <ion-list no-margin>
-    <form [formGroup]="editProfileForm" (submit)="updateUserProfile()" novalidate>
+
+  <form [formGroup]="editProfileForm" (submit)="updateUserProfile()" novalidate>
+
     <ion-item>
-      <ion-label color="steel2" stacked>Name</ion-label>
+      <ion-label color="steel2">Name</ion-label>
       <ion-input formControlName="userDisplayName" [(ngModel)]="currentUser.displayName" clearInput placeholder="Enter your name"></ion-input>
     </ion-item>
+
+    <ion-item>
+      <ion-label color="steel2">Email</ion-label>
+      <ion-input formControlName="userEmail" [(ngModel)]="currentUser.email" disabled></ion-input>
+      <ion-note item-end color="danger2" *ngIf="!emailVerified">unverified</ion-note>
+      <ion-note item-end color="steel2" *ngIf="emailVerified">verified!</ion-note>
+    </ion-item>
+
+    <ion-item text-center *ngIf="!emailVerified" (click)="verifyEmail()" >
+      <ion-badge color="danger2">Send verification email</ion-badge>
+    </ion-item>
+
     </form>
   </ion-list>
 
@@ -88,6 +110,7 @@
 
 
 <ion-footer>
+
   <form [formGroup]="editProfileForm" (submit)="updateUserProfile()" novalidate>
     <ion-toolbar>
       <ion-row>
@@ -104,4 +127,5 @@
       </ion-row>
     </ion-toolbar>
   </form>
+
 </ion-footer>

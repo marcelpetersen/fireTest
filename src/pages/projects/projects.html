@@ -13,7 +13,7 @@
 </ion-header>
 
 
-<ion-content no-bounce>
+<ion-content>
 	<ion-list>
  		<ion-card margin-vertical *ngFor="let project of projectsList | async"  (click)="projectTapped(project.$key)">
         <ion-toolbar color="primary">

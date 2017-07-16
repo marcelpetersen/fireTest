@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding-bottom no-bounce>
+<ion-content padding-bottom>
 
 <ion-item>
 	
@@ -47,7 +47,7 @@
     <ion-fab bottom right [hidden]="!pictureChosen">
 	    <ion-row>
 		    <ion-col>
-				<button ion-fab mini color="danger2" (click)="cancelPicture()"><ion-icon name="close-circle"></ion-icon></button>
+				<button ion-fab mini color="danger2" (click)="cancelGallery()"><ion-icon name="close-circle"></ion-icon></button>
 			</ion-col>
 			<ion-col>
 		    	<button ion-fab mini color="green" (click)="updatePicture()"><ion-icon name="checkmark-circle"></ion-icon></button>
@@ -63,26 +63,17 @@
 	<ion-list>
 
 	  <ion-item>
-	    <ion-label color="primary">Shot Number</ion-label>
+	    <ion-label stacked>Shot Number</ion-label>
 	    <ion-input formControlName="shotNumber" [(ngModel)]="currentShotNumber" type="number"></ion-input>
 	  </ion-item>
 
 	  <ion-item>
-	    <ion-label color="primary">Sub</ion-label>
+	    <ion-label stacked>Sub</ion-label>
 	    <ion-input formControlName="shotSub" [(ngModel)]="currentShotSub"></ion-input>
-	  </ion-item>
-	  <ion-item>
-	    <ion-label color="primary" stacked>Shot Title</ion-label>
-	    <ion-input formControlName="title" [(ngModel)]="currentTitle" clearInput></ion-input>
-	  </ion-item>
-
-	  <ion-item>
-	    <ion-label color="primary" stacked>Shot Description</ion-label>
-	    <ion-input formControlName="description" [(ngModel)]="currentDescription" clearInput></ion-input>
 	  </ion-item>
 
 		<ion-item>
-			<ion-segment formControlName="shotLoc" [(ngModel)]="currentShotLoc">
+			<ion-segment color="steel1" formControlName="shotLoc" [(ngModel)]="currentShotLoc">
 		   		<ion-segment-button value="INT">
 		    		Interior
 		   		</ion-segment-button>
@@ -96,7 +87,7 @@
 	 	</ion-item>
 
 		<ion-item>
-			<ion-segment formControlName="shotTime" [(ngModel)]="currentShotTime">
+			<ion-segment color="steel1" formControlName="shotTime" [(ngModel)]="currentShotTime">
 		   		<ion-segment-button value="DAY">
 		    		Day
 		   		</ion-segment-button>
@@ -110,7 +101,17 @@
 	 	</ion-item>
 
 	  <ion-item>
-	    <ion-label color="primary">Shot Type</ion-label>
+	    <ion-label stacked>Shot Title</ion-label>
+	    <ion-input formControlName="title" [(ngModel)]="currentTitle" clearInput></ion-input>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label stacked>Shot Description</ion-label>
+	    <ion-input formControlName="description" [(ngModel)]="currentDescription" clearInput></ion-input>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label stacked>Shot Type</ion-label>
 	    <ion-select interface="popover" formControlName="shotType" [(ngModel)]="currentShotType" placeholder="{{currentShotType}}">
 	      <ion-option value="cu">CU</ion-option>
 	      <ion-option value="mcu">MCU</ion-option>
@@ -121,7 +122,7 @@
 	  </ion-item>
 
 	  <ion-item>
-	    <ion-label color="primary">Camera Movement</ion-label>
+	    <ion-label stacked>Camera Movement</ion-label>
 	    <ion-select interface="popover" formControlName="cameraMovement" [(ngModel)]="currentCameraMovement" placeholder="{{currentCameraMovement}}">
 	      <ion-option value="pan">Pan</ion-option>
 	      <ion-option value="tilt">Tilt</ion-option>
@@ -130,12 +131,12 @@
 	  </ion-item>
 
 	  <ion-item>
-	    <ion-label color="primary">Page Count</ion-label>
+	    <ion-label stacked>Page Count</ion-label>
 	    <ion-input formControlName="pageCount" type="number" [(ngModel)]="currentPageCount"></ion-input>
 	  </ion-item>
 	  
 	  <ion-item>
-	    <ion-label color="primary">Eighths</ion-label>
+	    <ion-label stacked>Eighths</ion-label>
 	    <ion-select interface="popover" formControlName="pageEighths" [(ngModel)]="currentPageEighths" placeholder="{{currentPageEighths}}/8">
 	      <ion-option value="0">0/8</ion-option>
 	      <ion-option value="1">1/8</ion-option>

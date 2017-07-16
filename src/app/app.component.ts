@@ -5,6 +5,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AngularFireAuth } from 'angularfire2/auth';
 
+// Do not import from 'firebase' as you'll lose the tree shaking benefits
 import * as firebase from 'firebase/app';
 
 import { AuthService } from '../providers/auth-service';
@@ -56,8 +57,8 @@ export class MyApp {
         // no user logged in
         this.rootPage = 'LoginPage';
       }
-      console.log('hasName:', this.hasName);
-      console.log('hasPhoto:', this.hasPhoto);
+      // console.log('hasName:', this.hasName);
+      // console.log('hasPhoto:', this.hasPhoto);
     });
   }
 

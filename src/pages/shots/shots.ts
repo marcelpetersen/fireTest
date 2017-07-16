@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, AlertController, ActionSheetController } from 'ionic-angular';
 import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
-import { AlertController, ActionSheetController } from 'ionic-angular';
 
 import { ProjectData } from '../../providers/project-data';
 import { ShotlistData } from '../../providers/shotlist-data';
@@ -49,6 +48,34 @@ export class ShotsPage {
     editShotModal.present();
   }
 
+  presentActionSheet1() {
+    let actionSheet = this.actionSheetCtrl.create({
+      buttons: [
+       {
+          text: 'Edit Shot',
+          handler: () => {
+            this.editShot();
+            console.log('Edit Shot clicked');
+          }
+        }, {
+          text: 'Delete Shot',
+          role: 'destructive',
+          handler: () => {
+            // this.deleteShot();
+            console.log('Delete Shot clicked');
+          }
+        }, {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    actionSheet.present();
+  }
+
   //  Shot has takes?
   get hasTakes() {
     if (this.shotlistData.takeCount > 0) {
@@ -66,7 +93,7 @@ export class ShotsPage {
 
   //  Delete Take
   deleteTake(takeKey: string) {
-    console.log('addTake');
+    console.log('deleteTake');
     this.shotlistData.removeTake(takeKey);
   }
 

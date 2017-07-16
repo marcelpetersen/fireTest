@@ -71,7 +71,7 @@ export class EditScene {
   // Get Current Scene
   getScene() {
       this.sceneRef.on('value', snap => {
-      console.log('sceneRef value', snap.val());
+      // console.log('sceneRef value', snap.val());
       this.currentSceneNumber = snap.val().sceneNumber;
       this.currentSceneSub = snap.val().sceneSub;
       this.currentTitle = snap.val().title;
@@ -239,9 +239,9 @@ export class EditScene {
           role: 'destructive',
           handler: () => {
              this.sceneRef.off();
-             if (this.hasImage == true) {
-              this.shotlistData.removeSceneImage(this.sceneKey);
-             };
+             // if (this.hasImage == true) {
+             //  this.shotlistData.removeSceneImage(this.sceneKey);
+             // };
             this.shotlistData.removeScene(this.sceneKey);
             this.showToast('top', 'Scene Deleted');
             this.view.dismiss();

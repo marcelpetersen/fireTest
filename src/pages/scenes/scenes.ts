@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, AlertController, ActionSheetController } from 'ionic-angular';
 import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
-import { AlertController, ActionSheetController } from 'ionic-angular';
 
 import { ProjectData } from '../../providers/project-data';
 import { ShotlistData } from '../../providers/shotlist-data';
@@ -46,6 +45,34 @@ export class ScenesPage {
   editScene() {
     const editSceneModal = this.modal.create('EditScene');
     editSceneModal.present();
+  }
+
+  presentActionSheet1() {
+    let actionSheet = this.actionSheetCtrl.create({
+      buttons: [
+       {
+          text: 'Edit Scene',
+          handler: () => {
+            this.editScene();
+            console.log('Edit Scene clicked');
+          }
+        }, {
+          text: 'Delete Scene',
+          role: 'destructive',
+          handler: () => {
+            // this.deleteScene();
+            console.log('Delete Scene clicked');
+          }
+        }, {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    actionSheet.present();
   }
 
   //Open the New Shot modal

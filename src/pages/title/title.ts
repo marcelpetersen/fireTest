@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ViewController, ToastController } from 'ionic-angular';
 import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
-import { AlertController, ActionSheetController } from 'ionic-angular';
 
 import { ProjectData } from '../../providers/project-data';
 import { ShotlistData } from '../../providers/shotlist-data';
@@ -26,7 +25,7 @@ export class TitlePage {
   private shotlistRef: any;
   private scenesRef: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, db: AngularFireDatabase, public alertCtrl: AlertController, public actionSheetCtrl: ActionSheetController, public projectData: ProjectData, public shotlistData: ShotlistData, private modal: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, db: AngularFireDatabase, public viewCtrl: ViewController, public toastCtrl: ToastController, public projectData: ProjectData, public shotlistData: ShotlistData, private modal: ModalController) {
         
         this.currentProject = db.object('/projects/' + this.projectKey);
         this.scenesList = db.list('/shotlists/' +this.projectKey + '/scenes/');
@@ -45,7 +44,7 @@ export class TitlePage {
     const editProjectModal = this.modal.create('EditProject');
     editProjectModal.present();
   }
-
+ 
   //Open the New Scene modal
   addScene() {
     const newSceneModal = this.modal.create('NewScene');
@@ -61,4 +60,13 @@ export class TitlePage {
     });
   }
   
+  showToast(position: string, message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: position
+    });
+    toast.present(toast);
+  }
+
 }
